@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CoreMarket.Models
+namespace CoreMarket.Models;
+
+public class ShoppingBasket
 {
-    public class ShoppingBasket
-    {
-        [Key]
-        public int Id { get; set; }
-        public List<Product> Products { get; set; } = new List<Product>();
-    }
+    [Key]
+    public int Id { get; set; }
+    public List<Product> Products { get; set; } = new List<Product>();
 }

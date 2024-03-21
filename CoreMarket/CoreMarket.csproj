@@ -15,4 +15,12 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\Mojtaba\OneDrive\Desktop\Today tasks\Core-Market\CoreMarket\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\Mojtaba\OneDrive\Desktop\Today tasks\Core-Market\CoreMarket\.editorconfig" />
+  </ItemGroup>
+
 </Project>

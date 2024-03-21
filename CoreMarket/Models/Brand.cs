@@ -1,15 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
-namespace CoreMarket.Models
+namespace CoreMarket.Models;
+
+public class Brand
 {
-    public class Brand
-    {
-        [Key]
-        public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+    [Key]
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
 
-        public int CategoryId { get; set; }
-        public Category Category { get; set; }
+    public int CategoryId { get; set; }
+    public Category Category { get; set; }
 
-        public List<Product> Products { get; set; } = new List<Product>();
-    }
+    public List<Product> Products { get; set; } = new List<Product>();
 }

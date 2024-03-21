@@ -1,17 +1,16 @@
 ﻿using CoreMarket.Models;
 
-namespace CoreMarket.Interfaces
+namespace CoreMarket.Interfaces;
+
+public interface IBrandService
 {
-    public interface IBrandService
-    {
-        void AddBrand(Brand brand);
+    void AddBrand(Brand brand);
 
-        List<Brand> GetBrands();
+    List<Brand> GetBrands();
 
-        Brand? GetBrandById(int brandId);
+    Brand? GetBrandById(int brandId);
 
-        void UpdateBrand(Brand brand);
+    void UpdateBrand(Brand brand);
 
-        void DeleteBrand(int brandId);
-    }
+    void DeleteBrand(int brandId);
 }

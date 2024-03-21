@@ -1,18 +1,17 @@
 ﻿using CoreMarket.Models;
 
-namespace CoreMarket.ServiceContracts
- 
+namespace CoreMarket.ServiceContracts;
+
+
+public interface IProductService
 {
-    public interface IProductService
-    {
-        void AddProduct(Product product);
+    void AddProduct(Product product);
 
-        List<Product> GetProducts();
+    List<Product> GetProducts();
 
-        Product? GetProductById(int productId);
+    Product? GetProductById(int productId);
 
-        void UpdateProduct(Product product);
+    void UpdateProduct(Product product);
 
-        void DeleteProduct(int productId);
-    }
+    void DeleteProduct(int productId);
 }
