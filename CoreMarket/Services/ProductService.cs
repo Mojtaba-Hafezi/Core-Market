@@ -7,10 +7,8 @@ namespace CoreMarket.Services;
 public class ProductService : IProductService
 {
     private readonly AppDbContext _appDbContext;
-    public ProductService(AppDbContext appDbContext)
-    {
-        _appDbContext = appDbContext;
-    }
+    public ProductService(AppDbContext appDbContext) => _appDbContext = appDbContext;
+
 
     public void AddProduct(Product product)
     {
@@ -18,15 +16,11 @@ public class ProductService : IProductService
         _appDbContext.SaveChanges();
     }
 
-    public List<Product> GetProducts()
-    {
-        return _appDbContext.Products.ToList();
-    }
+    public List<Product> GetProducts() => _appDbContext.Products.ToList();
 
-    public Product? GetProductById(int productId)
-    {
-        return _appDbContext.Products.Where(p => p.Id == productId).FirstOrDefault();
-    }
+
+    public Product? GetProductById(int productId) => _appDbContext.Products.Where(p => p.Id == productId).FirstOrDefault();
+
 
     public void DeleteProduct(int productId)
     {

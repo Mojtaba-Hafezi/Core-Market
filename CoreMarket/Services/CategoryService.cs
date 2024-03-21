@@ -8,10 +8,7 @@ public class CategoryService : ICategoryService
 {
     private readonly AppDbContext _appDbContext;
 
-    public CategoryService(AppDbContext appDbContext)
-    {
-        _appDbContext = appDbContext;
-    }
+    public CategoryService(AppDbContext appDbContext) => _appDbContext = appDbContext;
 
     public void AddCategory(Category category)
     {
@@ -19,15 +16,11 @@ public class CategoryService : ICategoryService
         _appDbContext.SaveChanges();
     }
 
-    public List<Category> GetCategories()
-    {
-        return _appDbContext.Categories.ToList();
-    }
+    public List<Category> GetCategories() => _appDbContext.Categories.ToList();
 
-    public Category? GetCategoryById(int categoryId)
-    {
-        return _appDbContext.Categories.Where(c => c.Id == categoryId).FirstOrDefault();
-    }
+
+    public Category? GetCategoryById(int categoryId) => _appDbContext.Categories.Where(c => c.Id == categoryId).FirstOrDefault();
+
 
     public void DeleteCategory(int categoryId)
     {

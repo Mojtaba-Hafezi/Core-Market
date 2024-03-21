@@ -7,10 +7,8 @@ namespace CoreMarket.Controllers;
 public class ProductsController : Controller
 {
     private readonly IProductService _productsService;
-    public ProductsController(IProductService productService)
-    {
-        _productsService = productService;
-    }
+    public ProductsController(IProductService productService) => _productsService = productService;
+    
 
     [HttpGet]
     public IActionResult Index()

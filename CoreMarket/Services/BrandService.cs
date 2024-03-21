@@ -8,25 +8,19 @@ public class BrandService : IBrandService
 {
     private readonly AppDbContext _appDbContext;
 
-    public BrandService(AppDbContext appDbContext)
-    {
-        _appDbContext = appDbContext;
-    }
+    public BrandService(AppDbContext appDbContext) => _appDbContext = appDbContext;
+
     public void AddBrand(Brand brand)
     {
         _appDbContext.Brands.Add(brand);
         _appDbContext.SaveChanges();
     }
 
-    public List<Brand> GetBrands()
-    {
-        return _appDbContext.Brands.ToList();
-    }
+    public List<Brand> GetBrands() => _appDbContext.Brands.ToList();
 
-    public Brand? GetBrandById(int brandId)
-    {
-        return _appDbContext.Brands.Where(b => b.Id == brandId).FirstOrDefault();
-    }
+
+    public Brand? GetBrandById(int brandId) => _appDbContext.Brands.Where(b => b.Id == brandId).FirstOrDefault();
+
 
     public void DeleteBrand(int brandId)
     {

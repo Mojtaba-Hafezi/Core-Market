@@ -7,10 +7,8 @@ namespace CoreMarket.Controllers;
 public class CategoriesController : Controller
 {
     private readonly ICategoryService _categoryService;
-    public CategoriesController(ICategoryService categoryService)
-    {
-        _categoryService = categoryService;
-    }
+    public CategoriesController(ICategoryService categoryService) => _categoryService = categoryService;
+    
 
     [HttpGet]
     public IActionResult Index()

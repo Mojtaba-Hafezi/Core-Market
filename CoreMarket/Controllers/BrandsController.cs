@@ -7,10 +7,8 @@ namespace CoreMarket.Controllers;
 public class BrandsController : Controller
 {
     private readonly IBrandService _brandService;
-    public BrandsController(IBrandService brandService)
-    {
-        _brandService = brandService;
-    }
+    public BrandsController(IBrandService brandService) => _brandService = brandService;
+
 
     public IActionResult Index()
     {
