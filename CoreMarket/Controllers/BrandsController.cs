@@ -10,7 +10,7 @@ public class BrandsController : Controller
     public BrandsController(IBrandService brandService) => _brandService = brandService;
 
 
-    public IActionResult Index()
+    public IActionResult GetAll()
     {
         List<Brand> brandsList = _brandService.GetBrands();
         return Ok(brandsList);

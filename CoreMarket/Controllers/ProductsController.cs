@@ -4,19 +4,30 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CoreMarket.Controllers;
 
-public class ProductsController : Controller
+[Route("[controller]")]
+[ApiController]
+public class ProductsController : ControllerBase
 {
     private readonly IProductService _productsService;
     public ProductsController(IProductService productService) => _productsService = productService;
-    
 
+    //آیا نیاز به تعریف روت برای اکشن متدها هست؟
+    //[Route("/GetAll")]
     [HttpGet]
-    public IActionResult Index()
+    public IActionResult GetAll()
     {
         var products = _productsService.GetProducts();
         return Ok(products);
     }
 
+    [HttpGet("{id}")]
+    public IActionResult GetById(int id)
+    {
+        Product? product = _productsService.GetProductById(id);
+        return Ok(product);
+    }
+
+    [Route("/add")]
     [HttpPost]
     public IActionResult Add(Product product)
     {
@@ -24,21 +35,15 @@ public class ProductsController : Controller
         return Ok();
     }
 
-    [HttpPost]
+    [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
         _productsService.DeleteProduct(id);
         return Ok();
     }
 
-    [HttpGet]
-    public IActionResult Get(int id)
-    {
-        Product? product = _productsService.GetProductById(id);
-        return Ok(product);
-    }
 
-    [HttpPost]
+    [HttpPut]
     public IActionResult Update(Product product)
     {
         _productsService.UpdateProduct(product);

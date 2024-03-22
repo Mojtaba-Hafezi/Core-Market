@@ -11,7 +11,7 @@ public class CategoriesController : Controller
     
 
     [HttpGet]
-    public IActionResult Index()
+    public IActionResult GetAll()
     {
         var categories = _categoryService.GetCategories();
         return Ok(categories);
