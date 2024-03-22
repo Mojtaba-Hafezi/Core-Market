@@ -27,7 +27,6 @@ public class ProductsController : ControllerBase
         return Ok(product);
     }
 
-    [Route("/add")]
     [HttpPost]
     public IActionResult Add(Product product)
     {
