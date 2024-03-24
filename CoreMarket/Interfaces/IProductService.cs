@@ -5,13 +5,13 @@ namespace CoreMarket.ServiceContracts;
 
 public interface IProductService
 {
-    void AddProduct(Product product);
+    Task<bool> AddProduct(ProductDTO productDTO);
 
-    List<Product> GetProducts();
+    Task<List<ProductDTO>> GetProducts();
 
-    Product? GetProductById(int productId);
+    Task<ProductDTO?> GetProductById(int productId);
 
-    void UpdateProduct(Product product);
+    Task<bool> UpdateProduct(ProductDTO productDTO, int id);
 
-    void DeleteProduct(int productId);
+    Task<bool> DeleteProduct(int productDTOId);
 }

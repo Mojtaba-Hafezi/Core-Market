@@ -1,6 +1,7 @@
 ﻿using CoreMarket.Data;
 using CoreMarket.Interfaces;
 using CoreMarket.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoreMarket.Services;
 
@@ -19,7 +20,7 @@ public class BrandService : IBrandService
     public List<Brand> GetBrands() => _appDbContext.Brands.ToList();
 
 
-    public Brand? GetBrandById(int brandId) => _appDbContext.Brands.Where(b => b.Id == brandId).FirstOrDefault();
+    public async Task<Brand?> GetBrandById(int brandId) => await _appDbContext.Brands.FirstOrDefaultAsync(b => b.Id == brandId);
 
 
     public void DeleteBrand(int brandId)

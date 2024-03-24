@@ -2,7 +2,6 @@
 using CoreMarket.Models;
 using CoreMarket.ServiceContracts;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace CoreMarket.Controllers;
 
@@ -17,61 +16,29 @@ public class ProductsController : ControllerBase
         _productsService = productService;
         _brandService = brandService;
     }
-    
-    [Route("GetAll")]
+
+
     [HttpGet]
-    public ActionResult<List<Product>> GetAll()
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+    public async Task<ActionResult<List<Product>>> GetAll()
     {
-        var products = _productsService.GetProducts();
+        var products = await _productsService.GetProducts();
 
         //Ok - 200 - Success
         return Ok(products);
     }
 
-    [HttpGet("{id}")]
-    public ActionResult<Product> GetById(int id)
-    {
-        //BadRequest - 400 - Bad request - client error
-        if(id <= 0)
-        {
-            return BadRequest("The id should be an integer greater than zero");
-        }
 
-        Product? product = _productsService.GetProductById(id);
 
-        //NotFound - 404 - Not found - client error
-        if(product == null)
-        {
-            return NotFound($"The product with id={id} was not found");
-        }
+    [HttpGet("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        //Ok - 200 - Success
-        return Ok(product);
-    }
-
-    [HttpPost]
-    public ActionResult<bool> Add(Product product)
-    {
-        //BadRequest - 400 - Bad request - client error
-        if (product.BrandId <= 0)
-        {
-            return BadRequest("The id of the brand of the product should be greater than zero");
-        }
-
-        Brand? brand = _brandService.GetBrandById(product.BrandId);
-        //NotFound - 404 - Not found - client error
-        if (brand == null)
-        {
-            return NotFound("The brand was not found whit this id");
-        }
-        _productsService.AddProduct(product);
-
-        //Ok - 200 - Success
-        return Ok(true);
-    }
-
-    [HttpDelete("{id}")]
-    public ActionResult<bool> Delete(int id)
+    public async Task<ActionResult<Product>> GetById([FromRoute] int id)
     {
         //BadRequest - 400 - Bad request - client error
         if (id <= 0)
@@ -79,41 +46,117 @@ public class ProductsController : ControllerBase
             return BadRequest("The id should be an integer greater than zero");
         }
 
-        Product? product = _productsService.GetProductById(id);
+        ProductDTO? productDTO = await _productsService.GetProductById(id);
 
         //NotFound - 404 - Not found - client error
-        if (product == null)
+        if (productDTO == null)
         {
             return NotFound($"The product with id={id} was not found");
         }
 
-        _productsService.DeleteProduct(id);
-
         //Ok - 200 - Success
-        return Ok(true);
+        return Ok(productDTO);
     }
 
 
-    [HttpPut]
-    public IActionResult Update(Product product)
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+    public async Task<ActionResult<bool>> Add([FromBody] ProductDTO productDTO)
     {
         //BadRequest - 400 - Bad request - client error
-        if (product.Id <= 0)
+        if (productDTO.BrandId <= 0)
+        {
+            return BadRequest("The id of the brand of the product should be greater than zero");
+        }
+
+        Brand? brand = await _brandService.GetBrandById(productDTO.BrandId);
+        //NotFound - 404 - Not found - client error
+        if (brand == null)
+        {
+            return NotFound("The brand was not found whit this id");
+        }
+
+        //Ok - 200 - Success
+        if (await _productsService.AddProduct(productDTO))
+        {
+            return Ok(true);
+            //201
+            //Header:Location:http...../products/GetById/89
+        }
+
+        //StatusCode - 500 - Internal server error
+        return StatusCode(500, "An error occured! The product couldn't be added to the database");
+    }
+
+
+
+    [HttpDelete("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+    public async Task<ActionResult<bool>> Delete([FromRoute] int id)
+    {
+        //BadRequest - 400 - Bad request - client error
+        if (id <= 0)
         {
             return BadRequest("The id should be an integer greater than zero");
         }
 
-        Product? productToUpdate = _productsService.GetProductById(product.Id);
+        ProductDTO? productDTO = await _productsService.GetProductById(id);
+
+        //NotFound - 404 - Not found - client error
+        if (productDTO == null)
+        {
+            return NotFound($"The product with id={id} was not found");
+        }
+
+        //Ok - 200 - Success
+        if (await _productsService.DeleteProduct(id))
+        {
+            return Ok(true);
+        }
+
+        //StatusCode - 500 - Internal server error
+        return StatusCode(500, "An error occured! The product couldn't be deleted from database");
+    }
+
+
+
+    [HttpPut("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+    public async Task<ActionResult<bool>> Update([FromBody] ProductDTO productDTO, [FromRoute] int id)
+    {
+        //BadRequest - 400 - Bad request - client error
+        if (id <= 0)
+        {
+            return BadRequest("The id should be an integer greater than zero");
+        }
+
+        ProductDTO? productToUpdate = await _productsService.GetProductById(id);
 
         //NotFound - 404 - Not found - client error
         if (productToUpdate == null)
         {
-            return NotFound($"The product with id={product.Id} was not found");
+            return NotFound($"The product with id={id} was not found");
         }
 
-        _productsService.UpdateProduct(product);
-
         //Ok - 200 - Success
-        return Ok();
+        if (await _productsService.UpdateProduct(productDTO, id))
+        {
+            return Ok(true);
+        }
+
+        //StatusCode - 500 - Internal server error
+        return StatusCode(500, "An error occured! The product couldn't be updated in database");
     }
 }
