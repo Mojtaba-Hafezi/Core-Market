@@ -8,7 +8,7 @@ public interface IBrandService
 
     List<Brand> GetBrands();
 
-    Brand? GetBrandById(int brandId);
+    Task<Brand?> GetBrandById(int brandId);
 
     void UpdateBrand(Brand brand);
 
