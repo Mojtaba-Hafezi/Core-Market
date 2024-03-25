@@ -49,7 +49,7 @@ public class ProductService : IProductService
     public async Task<ProductDTO?> GetById(int productId)
     {
         Product? product = await _appDbContext.Products.FirstOrDefaultAsync(p => p.Id == productId);
-        if(product == null)
+        if (product == null)
         {
             return null;
         }

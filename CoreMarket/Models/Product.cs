@@ -4,10 +4,8 @@ using System.Security.Principal;
 
 namespace CoreMarket.Models;
 
-public class Product
+public class Product : BaseModel
 {
-    [Key]
-    public int Id { get; set; }
 
     [Required]
     public string Name { get; set; } = string.Empty;
@@ -17,7 +15,7 @@ public class Product
     public double Price { get; set; }
 
     [Required]
-    [Range(1, int.MaxValue, ErrorMessage ="The {0} should be greater than 0")]
+    [Range(1, int.MaxValue, ErrorMessage = "The {0} should be greater than 0")]
     public int Quantity { get; set; }
 
     [Required]

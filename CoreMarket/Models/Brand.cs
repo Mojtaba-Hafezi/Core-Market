@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 namespace CoreMarket.Models;
 
-public class Brand
+public class Brand : BaseModel
 {
-    [Key]
-    public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
 
     public int CategoryId { get; set; }
