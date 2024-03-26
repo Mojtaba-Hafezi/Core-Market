@@ -12,7 +12,7 @@ public class ProductService : IProductService
     public ProductService(AppDbContext appDbContext) => _appDbContext = appDbContext;
 
 
-    public async Task<bool> AddProduct(ProductDTO productDTO)
+    public async Task<int?> Add(ProductDTO productDTO)
     {
         Product product = new Product
         {
@@ -21,14 +21,16 @@ public class ProductService : IProductService
             Price = productDTO.Price,
             Quantity = productDTO.Quantity
         };
+
         await _appDbContext.Products.AddAsync(product);
-        return (await _appDbContext.SaveChangesAsync() > 0);
+
+        return (await _appDbContext.SaveChangesAsync() > 0) ? product.Id : null;
     }
 
-    public async Task<List<ProductDTO>> GetProducts()
+    public async Task<ICollection<ProductDTO>> GetAll()
     {
-        List<Product> products = await _appDbContext.Products.ToListAsync();
-        List<ProductDTO> productsDTO = new List<ProductDTO>();
+        ICollection<Product> products = await _appDbContext.Products.ToListAsync();
+        ICollection<ProductDTO> productsDTO = new List<ProductDTO>();
 
         foreach (Product product in products)
         {
@@ -44,10 +46,10 @@ public class ProductService : IProductService
     }
 
 
-    public async Task<ProductDTO?> GetProductById(int productId)
+    public async Task<ProductDTO?> GetById(int productId)
     {
         Product? product = await _appDbContext.Products.FirstOrDefaultAsync(p => p.Id == productId);
-        if(product == null)
+        if (product == null)
         {
             return null;
         }
@@ -61,7 +63,7 @@ public class ProductService : IProductService
         return productDTO;
     }
 
-    public async Task<bool> DeleteProduct(int productDTOId)
+    public async Task<bool> Delete(int productDTOId)
     {
         var productToRemove = await _appDbContext.Products.FirstOrDefaultAsync(p => p.Id == productDTOId);
 
@@ -72,7 +74,7 @@ public class ProductService : IProductService
         return (await _appDbContext.SaveChangesAsync() > 0);
     }
 
-    public async Task<bool> UpdateProduct(ProductDTO productDTO, int id)
+    public async Task<bool> Update(ProductDTO productDTO, int id)
     {
         var productToUpdate = await _appDbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
 
