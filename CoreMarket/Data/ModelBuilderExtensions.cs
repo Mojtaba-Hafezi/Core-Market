@@ -1,5 +1,4 @@
 ﻿using CoreMarket.Models;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoreMarket.Data;
