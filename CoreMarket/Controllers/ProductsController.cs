@@ -67,7 +67,9 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
+
     public async Task<ActionResult> Add( ProductDTO productDTO)
+
     {
         //BadRequest - 400 - Bad request - client error
         if (productDTO.BrandId <= 0)
@@ -119,6 +121,7 @@ public class ProductsController : ControllerBase
         }
 
         //Ok - 200 - Success
+
         if (await _productsService.DeleteAsync(id))
         {
             return Ok();
@@ -143,6 +146,7 @@ public class ProductsController : ControllerBase
         {
             return BadRequest("The id should be an integer greater than zero");
         }
+
 
         Product? productToUpdate = await _productsService.GetByIdAsync(id);
 
