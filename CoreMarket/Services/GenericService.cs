@@ -7,22 +7,27 @@ namespace CoreMarket.Services;
 
 public class GenericService<TEntity> : IGenericService<TEntity> where TEntity : BaseModel
 
-{ 
-    private readonly AppDbContext _appDbContext;
+
+{
+    protected readonly AppDbContext _appDbContext;
 
     public GenericService(AppDbContext appDbContext)
     {
         _appDbContext = appDbContext;
     }
 
-    public async Task<int?> Add(TEntity entity)
+
+    public async Task<int?> AddAsync(TEntity entity)
+
     {
         await _appDbContext.Set<TEntity>().AddAsync(entity);
 
         return (await _appDbContext.SaveChangesAsync() > 0) ? entity.Id : null;
     }
 
-    public async Task<bool> Delete(int id)
+
+    public async Task<bool> DeleteAsync(int id)
+
     {
         var entityToRemove = await _appDbContext.Set<TEntity>().FirstOrDefaultAsync(e => e.Id == id);
         if (entityToRemove != null)
@@ -32,19 +37,31 @@ public class GenericService<TEntity> : IGenericService<TEntity> where TEntity : 
         return (await _appDbContext.SaveChangesAsync() > 0);
     }
 
-    public async Task<ICollection<TEntity>> GetAll()
+
+    public async Task<IEnumerable<TEntity>> GetAllAsync()
+
     {
         return await _appDbContext.Set<TEntity>().ToListAsync();
     }
 
-    public async Task<TEntity?> GetById(int id)
+
+    public async Task<TEntity?> GetByIdAsync(int id)
+
     {
         return await _appDbContext.Set<TEntity>().FirstOrDefaultAsync(e => e.Id == id);
     }
 
-    public async Task<bool> Update(TEntity entity)
+
+    public async Task<bool> UpdateAsync(TEntity entity)
     {
-        _appDbContext.Set<TEntity>().Update(entity);
+        var originalEntity = _appDbContext.Set<TEntity>().FirstOrDefault(e => e.Id == entity.Id);
+
+        if (originalEntity != null)
+        {
+            _appDbContext.Entry(originalEntity).State = EntityState.Detached;
+        }
+        _appDbContext.Entry(entity).State = EntityState.Modified;
+
         return (await _appDbContext.SaveChangesAsync() > 0);
     }
 

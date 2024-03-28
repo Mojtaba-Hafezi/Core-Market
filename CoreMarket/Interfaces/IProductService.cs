@@ -1,17 +1,9 @@
 ﻿using CoreMarket.Models;
 
-namespace CoreMarket.ServiceContracts;
+namespace CoreMarket.Interfaces;
 
 
-public interface IProductService
+public interface IProductService : IGenericService<Product>
 {
-    Task<int?> Add(ProductDTO productDTO);
 
-    Task<ICollection<ProductDTO>> GetAll();
-
-    Task<ProductDTO?> GetById(int productId);
-
-    Task<bool> Update(ProductDTO productDTO, int id);
-
-    Task<bool> Delete(int productDTOId);
 }

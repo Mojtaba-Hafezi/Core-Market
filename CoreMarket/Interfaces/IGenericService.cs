@@ -4,13 +4,13 @@ namespace CoreMarket.Interfaces;
 
 public interface IGenericService<TEntity> where TEntity : class
 {
-    Task<int?> Add(TEntity entity);
+    Task<int?> AddAsync(TEntity entity);
 
-    Task<ICollection<TEntity>> GetAll();
+    Task<IEnumerable<TEntity>> GetAllAsync();
 
-    Task<TEntity?> GetById(int id);
+    Task<TEntity?> GetByIdAsync(int id);
 
-    Task<bool> Update(TEntity entity);
+    Task<bool> UpdateAsync(TEntity entity);
 
-    Task<bool> Delete(int id);
+    Task<bool> DeleteAsync(int id);
 }

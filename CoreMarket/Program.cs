@@ -1,6 +1,6 @@
 using CoreMarket.Data;
 using CoreMarket.Interfaces;
-using CoreMarket.ServiceContracts;
+using CoreMarket.Models;
 using CoreMarket.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,7 +11,9 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(conn
 builder.Services.AddScoped<ICategoryService,CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
+//builder.Services.AddScoped<IGenericService<BaseModel>,GenericService<BaseModel>>();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 
