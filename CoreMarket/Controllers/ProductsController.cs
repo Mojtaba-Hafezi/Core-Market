@@ -58,6 +58,7 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
     public async Task<ActionResult> Add([FromBody] ProductDTO productDTO)
+
     {
         if (productDTO.BrandId <= 0)
             return BadRequest("The id of the brand of the product should be greater than zero");
