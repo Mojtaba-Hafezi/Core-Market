@@ -17,8 +17,6 @@ public class ProductDTO
 
     [Required]
     public int BrandId { get; set; }
-    public Brand? Brand { get; set; }
 
     public int? ShoppingBasketId { get; set; }
-    public ShoppingBasket? shoppingBasket { get; set; }
 }
