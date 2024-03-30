@@ -7,7 +7,6 @@ namespace CoreMarket.Services;
 
 public class GenericService<TEntity> : IGenericService<TEntity> where TEntity : BaseModel
 
-
 {
     protected readonly AppDbContext _appDbContext;
 
@@ -16,18 +15,14 @@ public class GenericService<TEntity> : IGenericService<TEntity> where TEntity : 
         _appDbContext = appDbContext;
     }
 
-
     public async Task<int?> AddAsync(TEntity entity)
-
     {
         await _appDbContext.Set<TEntity>().AddAsync(entity);
 
         return (await _appDbContext.SaveChangesAsync() > 0) ? entity.Id : null;
     }
 
-
     public async Task<bool> DeleteAsync(int id)
-
     {
         var entityToRemove = await _appDbContext.Set<TEntity>().FirstOrDefaultAsync(e => e.Id == id);
         if (entityToRemove != null)
@@ -37,20 +32,15 @@ public class GenericService<TEntity> : IGenericService<TEntity> where TEntity : 
         return (await _appDbContext.SaveChangesAsync() > 0);
     }
 
-
     public async Task<IEnumerable<TEntity>> GetAllAsync()
-
     {
         return await _appDbContext.Set<TEntity>().ToListAsync();
     }
 
-
     public async Task<TEntity?> GetByIdAsync(int id)
-
     {
         return await _appDbContext.Set<TEntity>().FirstOrDefaultAsync(e => e.Id == id);
     }
-
 
     public async Task<bool> UpdateAsync(TEntity entity)
     {
@@ -61,7 +51,6 @@ public class GenericService<TEntity> : IGenericService<TEntity> where TEntity : 
             _appDbContext.Entry(originalEntity).State = EntityState.Detached;
         }
         _appDbContext.Entry(entity).State = EntityState.Modified;
-
         return (await _appDbContext.SaveChangesAsync() > 0);
     }
 

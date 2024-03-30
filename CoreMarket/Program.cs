@@ -8,10 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 var connectionString = builder.Configuration.GetConnectionString("CoreMarketConnection");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
-builder.Services.AddScoped<ICategoryService,CategoryService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
-//builder.Services.AddScoped<IGenericService<BaseModel>,GenericService<BaseModel>>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program));
 
