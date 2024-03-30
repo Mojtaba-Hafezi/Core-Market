@@ -45,6 +45,7 @@ public class ProductsController : ControllerBase
 
         Product product = await _productsService.GetByIdAsync(id);
         if (product == null)
+
             return NotFound($"The product with id={id} was not found");
 
         return Ok(product);
@@ -58,6 +59,7 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
     public async Task<ActionResult> Add([FromBody] ProductDTO productDTO)
+
 
     {
         if (productDTO.BrandId <= 0)
