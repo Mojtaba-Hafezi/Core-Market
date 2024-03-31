@@ -1,6 +1,5 @@
 using CoreMarket.Data;
 using CoreMarket.Interfaces;
-using CoreMarket.Models;
 using CoreMarket.Services;
 using Microsoft.EntityFrameworkCore;
 

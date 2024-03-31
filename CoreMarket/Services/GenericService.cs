@@ -25,7 +25,7 @@ public class GenericService<TEntity> : IGenericService<TEntity> where TEntity : 
     public async Task<bool> DeleteAsync(int id)
     {
         var entityToRemove = await _appDbContext.Set<TEntity>().FirstOrDefaultAsync(e => e.Id == id);
-        if (entityToRemove != null)
+        if (entityToRemove is not null)
         {
             _appDbContext.Set<TEntity>().Remove(entityToRemove);
         }
@@ -46,7 +46,7 @@ public class GenericService<TEntity> : IGenericService<TEntity> where TEntity : 
     {
         var originalEntity = _appDbContext.Set<TEntity>().FirstOrDefault(e => e.Id == entity.Id);
 
-        if (originalEntity != null)
+        if (originalEntity is not null)
         {
             _appDbContext.Entry(originalEntity).State = EntityState.Detached;
         }

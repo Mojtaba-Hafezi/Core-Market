@@ -42,9 +42,10 @@ public class ProductsController : ControllerBase
     {
         if (id <= 0)
             return BadRequest("The id should be an integer greater than zero");
-        Product product = await _productsService.GetByIdAsync(id);
-        if (product == null)
 
+        Product product = await _productsService.GetByIdAsync(id);
+
+        if (product is null)
             return NotFound($"The product with id={id} was not found");
 
         return Ok(product);
@@ -69,6 +70,7 @@ public class ProductsController : ControllerBase
             return NotFound("The brand was not found whit this id");
 
         int? productId = await _productsService.AddAsync(_mapper.Map<Product>(productDTO));
+
         if (productId is not null)
             return CreatedAtRoute("GetByIdAsync", new { id = productId }, productDTO);
 
@@ -90,7 +92,7 @@ public class ProductsController : ControllerBase
 
         Product product = await _productsService.GetByIdAsync(id);
 
-        if (product == null)
+        if (product is null)
             return NotFound($"The product with id={id} was not found");
 
         if (await _productsService.DeleteAsync(id))
@@ -112,11 +114,10 @@ public class ProductsController : ControllerBase
         if (id <= 0)
             return BadRequest("The id should be an integer greater than zero");
 
-        Product? productToUpdate = await _productsService.GetByIdAsync(id);
+        Product productToUpdate = await _productsService.GetByIdAsync(id);
 
-        if (productToUpdate == null)
+        if (productToUpdate is null)
             return NotFound($"The product with id={id} was not found");
-
 
         Product newProduct = _mapper.Map<Product>(productDTO);
         newProduct.Id = id;

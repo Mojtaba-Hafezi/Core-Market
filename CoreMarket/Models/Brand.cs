@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-namespace CoreMarket.Models;
+﻿namespace CoreMarket.Models;
 
 public class Brand : BaseModel
 {
