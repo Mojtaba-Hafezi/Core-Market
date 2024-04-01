@@ -15,7 +15,7 @@ public class Product : BaseModel
     public double Price { get; set; }
 
     [Required]
-    [Range(1, int.MaxValue, ErrorMessage = "The {0} should be greater than 0")]
+    [Range(0, int.MaxValue, ErrorMessage = "The {0} should be greater or equal to {1}")]
     public int Quantity { get; set; }
 
     [Required]
