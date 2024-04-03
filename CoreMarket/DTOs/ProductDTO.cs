@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using CoreMarket.Models;
 
-namespace CoreMarket.Models;
+namespace CoreMarket.DTOs;
 
 public class ProductDTO
 {

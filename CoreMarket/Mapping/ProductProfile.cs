@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CoreMarket.DTOs;
 using CoreMarket.Models;
 
 namespace CoreMarket.Mapping;
