@@ -50,37 +50,6 @@ public class AppDbContext : DbContext
 
         #endregion
 
-        #region Properties
-
-        modelBuilder.Entity<BaseModel>().Property(b => b.Id)
-            .IsRequired();
-
-        modelBuilder.Entity<Category>().Property(b => b.Name)
-            .IsRequired();
-
-        modelBuilder.Entity<Brand>().Property(b => b.Name)
-            .IsRequired();
-
-        modelBuilder.Entity<Brand>().Property(b => b.CategoryId)
-            .IsRequired();
-
-        modelBuilder.Entity<Product>().Property(p => p.Name)
-            .IsRequired();
-
-        modelBuilder.Entity<Product>().Property(p => p.Price)
-            .IsRequired()
-            .HasAnnotation("Range", new RangeAttribute(0, int.MaxValue) { ErrorMessage = "The {0} should be greater or equal to {1}" });
-
-        modelBuilder.Entity<Product>().Property(p => p.Quantity)
-            .IsRequired()
-            .HasAnnotation("Range", new RangeAttribute(0, int.MaxValue) { ErrorMessage = "The {0} should be greater or equal to {1}" });
-
-        modelBuilder.Entity<Product>().Property(p => p.BrandId)
-            .IsRequired();
-
-        #endregion
-
-
-
+        
     }
 }
