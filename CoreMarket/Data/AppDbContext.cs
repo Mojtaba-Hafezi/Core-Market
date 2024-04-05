@@ -9,7 +9,8 @@ public class AppDbContext : DbContext
     public DbSet<Product> Products { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Brand> Brands { get; set; }
-    public DbSet<ShoppingBasket> ShoppingBaskets { get; set; }
+    //public DbSet<ShoppingBasket> ShoppingBaskets { get; set; }
+    //public DbSet<ProductShoppingBasket> ProductShoppingBaskets { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
@@ -28,11 +29,16 @@ public class AppDbContext : DbContext
             .HasForeignKey(p => p.BrandId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Product>()
-            .HasOne<ShoppingBasket>()
-            .WithMany(sb => sb.Products)
-            .HasForeignKey(p => p.ShoppingBasketId);
-        //TODO : What will happen if shopping basket gets deleted
+        //modelBuilder.Entity<ProductShoppingBasket>()
+        //    .HasOne<Product>()
+        //    .WithMany(p => p.ProductShoppingBaskets)
+        //    .HasForeignKey(psb => psb.ProductId);
+
+        //modelBuilder.Entity<ProductShoppingBasket>()
+        //    .HasOne<ShoppingBasket>()
+        //    .WithMany(sb => sb.ProductShoppingBaskets)
+        //    .HasForeignKey(psb => psb.ShoppingBasketId);
+
 
         modelBuilder.Entity<Brand>()
             .HasOne<Category>(b => b.Category)
@@ -47,9 +53,10 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Category>().HasKey(c => c.Id);
         modelBuilder.Entity<Brand>().HasKey(b => b.Id);
         modelBuilder.Entity<Product>().HasKey(p => p.Id);
+        //modelBuilder.Entity<ProductShoppingBasket>().HasKey(psb => new { psb.ProductId, psb.ShoppingBasket });
 
         #endregion
 
-        
+
     }
 }
