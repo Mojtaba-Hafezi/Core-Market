@@ -14,6 +14,4 @@ public class Product : BaseModel
 
     public int BrandId { get; set; }
     public Brand? Brand { get; set; }
-
-    //public List<ProductShoppingBasket> ProductShoppingBaskets { get; set; }
 }
