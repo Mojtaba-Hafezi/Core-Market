@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using CoreMarket.EntitiesContracts;
 
 namespace CoreMarket.Models;
 
-public class Category:BaseModel
+public class Category:BaseEntity
 {
     public string Name { get; set; } = string.Empty;
 

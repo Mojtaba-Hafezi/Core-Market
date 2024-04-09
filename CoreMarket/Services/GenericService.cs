@@ -1,11 +1,11 @@
 ﻿using CoreMarket.Data;
+using CoreMarket.EntitiesContracts;
 using CoreMarket.Interfaces;
-using CoreMarket.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoreMarket.Services;
 
-public class GenericService<TEntity> : IGenericService<TEntity> where TEntity : BaseModel
+public class GenericService<TEntity> : IGenericService<TEntity> where TEntity : BaseEntity
 
 {
     protected readonly AppDbContext _appDbContext;
@@ -17,6 +17,7 @@ public class GenericService<TEntity> : IGenericService<TEntity> where TEntity : 
 
     public async Task<int?> AddAsync(TEntity entity)
     {
+        entity.CreatedAt = DateTime.Now;
         await _appDbContext.Set<TEntity>().AddAsync(entity);
 
         return (await _appDbContext.SaveChangesAsync() > 0) ? entity.Id : null;
@@ -24,11 +25,14 @@ public class GenericService<TEntity> : IGenericService<TEntity> where TEntity : 
 
     public async Task<bool> DeleteAsync(int id)
     {
-        var entityToRemove = await _appDbContext.Set<TEntity>().FirstOrDefaultAsync(e => e.Id == id);
-        if (entityToRemove is not null)
+        var originalEntity = await _appDbContext.Set<TEntity>().FirstOrDefaultAsync(e => e.Id == id);
+
+        if (originalEntity is not null)
         {
-            _appDbContext.Set<TEntity>().Remove(entityToRemove);
+            originalEntity.DeletedAt = DateTime.Now;
+            _appDbContext.Set<TEntity>().Update(originalEntity);
         }
+
         return (await _appDbContext.SaveChangesAsync() > 0);
     }
 
@@ -49,8 +53,12 @@ public class GenericService<TEntity> : IGenericService<TEntity> where TEntity : 
         if (originalEntity is not null)
         {
             _appDbContext.Entry(originalEntity).State = EntityState.Detached;
+            entity.CreatedAt = originalEntity.CreatedAt;
+            entity.CreatedByUserId = originalEntity.CreatedByUserId;
+            entity.ModifiedAt = DateTime.Now;
+            _appDbContext.Entry(entity).State = EntityState.Modified;
         }
-        _appDbContext.Entry(entity).State = EntityState.Modified;
+
         return (await _appDbContext.SaveChangesAsync() > 0);
     }
 

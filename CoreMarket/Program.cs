@@ -5,10 +5,17 @@ using CoreMarket.Interfaces;
 using CoreMarket.Services;
 using CoreMarket.Validators;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddFluentValidation(v =>
+{
+    v.ImplicitlyValidateChildProperties = true;
+    v.ImplicitlyValidateRootCollectionElements = true;
+    v.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+});
 var connectionString = builder.Configuration.GetConnectionString("CoreMarketConnection");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddScoped<ICategoryService, CategoryService>();

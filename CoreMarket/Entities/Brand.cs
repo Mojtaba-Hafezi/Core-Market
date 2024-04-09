@@ -1,6 +1,8 @@
-﻿namespace CoreMarket.Models;
+﻿using CoreMarket.EntitiesContracts;
 
-public class Brand : BaseModel
+namespace CoreMarket.Models;
+
+public class Brand : BaseEntity
 {
     public string Name { get; set; } = string.Empty;
 

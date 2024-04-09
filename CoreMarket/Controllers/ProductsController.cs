@@ -62,9 +62,7 @@ public class ProductsController : ControllerBase
     public async Task<ActionResult> Add([FromBody] ProductDTO productDTO)
 
     {
-        if (productDTO.BrandId <= 0)
-            return BadRequest("The id of the brand of the product should be greater than zero");
-
+        
         Brand brand = await _brandService.GetBrandById(productDTO.BrandId);
 
         if (brand is null)
