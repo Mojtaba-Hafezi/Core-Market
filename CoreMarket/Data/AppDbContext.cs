@@ -33,7 +33,18 @@ public class AppDbContext : DbContext
 
         modelBuilder.Seed();
 
+        #region Indexes 
+        modelBuilder.Entity<Product>()
+            .HasIndex(p => p.Id);
 
+        modelBuilder.Entity<Product>()
+            .HasIndex(p => p.IsDeleted);
+
+        modelBuilder.Entity<Product>()
+            .HasIndex(p => p.BrandId);
+
+
+        #endregion
         #region Relations
         modelBuilder.Entity<Product>()
             .HasOne<Brand>(p => p.Brand)
