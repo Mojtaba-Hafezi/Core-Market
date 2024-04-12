@@ -19,5 +19,9 @@ public abstract class BaseEntity : IDeletableEntity, IAuditableEntity
             else
                 return false;
         }
+        set
+        {
+
+        }
     }
 }

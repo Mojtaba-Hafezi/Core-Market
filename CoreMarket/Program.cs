@@ -18,6 +18,7 @@ builder.Services.AddControllers().AddFluentValidation(v =>
 });
 var connectionString = builder.Configuration.GetConnectionString("CoreMarketConnection");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddHttpLogging(logging => { });
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
@@ -35,7 +36,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseHttpLogging();
 app.UseStaticFiles();
 app.UseRouting();
 app.MapControllers();

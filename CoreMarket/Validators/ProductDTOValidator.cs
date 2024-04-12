@@ -13,25 +13,25 @@ public class ProductDTOValidator : AbstractValidator<ProductDTO>
             .NotNull()
             .NotEmpty()
             .MinimumLength(2)
-            .WithMessage("From FV:Please enter a valid name");
+            .WithMessage("Please enter a valid name");
 
         RuleFor(p => p.Price)
             .NotNull()
             .GreaterThanOrEqualTo(0)
             .LessThan(double.MaxValue)
-            .WithMessage("From FV:Please enter a valid value for price");
+            .WithMessage("Please enter a valid value for price");
 
         RuleFor(p => p.Quantity)
             .NotNull()
             .GreaterThanOrEqualTo(0)
             .LessThan(int.MaxValue)
-            .WithMessage("From FV:Please enter a valid value for quantity");
+            .WithMessage("Please enter a valid value for quantity");
 
         RuleFor(p=>p.BrandId)
             .NotNull()
             .NotEmpty()
             .GreaterThan(0)
-            .WithMessage("From FV:Please enter a valid BrandId");
+            .WithMessage("Please enter a valid BrandId");
 
     }
 }

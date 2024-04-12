@@ -60,13 +60,11 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
     public async Task<ActionResult> Add([FromBody] ProductDTO productDTO)
-
     {
-        
         Brand brand = await _brandService.GetBrandById(productDTO.BrandId);
 
         if (brand is null)
-            return NotFound("The brand was not found whit this id");
+            return NotFound($"The brand was not found for id = {productDTO.BrandId}");
 
         int? productId = await _productsService.AddAsync(_mapper.Map<Product>(productDTO));
 

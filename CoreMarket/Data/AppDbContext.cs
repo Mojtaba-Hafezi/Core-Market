@@ -45,6 +45,7 @@ public class AppDbContext : DbContext
 
 
         #endregion
+
         #region Relations
         modelBuilder.Entity<Product>()
             .HasOne<Brand>(p => p.Brand)
@@ -69,7 +70,6 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Product>().HasKey(p => p.Id);
 
         #endregion
-
 
     }
 }
