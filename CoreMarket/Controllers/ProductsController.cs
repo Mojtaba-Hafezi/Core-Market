@@ -80,6 +80,7 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status410Gone)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
     public async Task<ActionResult> Delete([FromRoute] int id)
@@ -91,6 +92,9 @@ public class ProductsController : ControllerBase
 
         if (product is null)
             return NotFound($"The product with id={id} was not found");
+
+        if (product.IsDeleted)
+            return StatusCode(410, $"The product with id={id} has beed deleted already");
 
         if (await _productsService.DeleteAsync(id))
             return Ok();
@@ -104,6 +108,7 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status410Gone)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
     public async Task<ActionResult> Update([FromBody] ProductDTO productDTO, [FromRoute] int id)
@@ -115,6 +120,9 @@ public class ProductsController : ControllerBase
 
         if (productToUpdate is null)
             return NotFound($"The product with id={id} was not found");
+
+        if (productToUpdate.IsDeleted)
+            return StatusCode(410, $"The product with id={id} has beed deleted");
 
         Product newProduct = _mapper.Map<Product>(productDTO);
         newProduct.Id = id;

@@ -11,6 +11,16 @@ namespace CoreMarket.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Brands_Categories_CategoryId",
+                schema: "BASE",
+                table: "Brands");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Products_Brands_BrandId",
+                schema: "BASE",
+                table: "Products");
+
             migrationBuilder.AddColumn<bool>(
                 name: "IsDeleted",
                 schema: "BASE",
@@ -41,7 +51,7 @@ namespace CoreMarket.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "CreatedAt", "IsDeleted" },
-                values: new object[] { new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6630), false });
+                values: new object[] { new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(8955), false });
 
             migrationBuilder.UpdateData(
                 schema: "BASE",
@@ -49,7 +59,7 @@ namespace CoreMarket.Migrations
                 keyColumn: "Id",
                 keyValue: 2,
                 columns: new[] { "CreatedAt", "IsDeleted" },
-                values: new object[] { new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6636), false });
+                values: new object[] { new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(8970), false });
 
             migrationBuilder.UpdateData(
                 schema: "BASE",
@@ -57,7 +67,7 @@ namespace CoreMarket.Migrations
                 keyColumn: "Id",
                 keyValue: 3,
                 columns: new[] { "CreatedAt", "IsDeleted" },
-                values: new object[] { new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6639), false });
+                values: new object[] { new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(8976), false });
 
             migrationBuilder.UpdateData(
                 schema: "BASE",
@@ -65,7 +75,7 @@ namespace CoreMarket.Migrations
                 keyColumn: "Id",
                 keyValue: 4,
                 columns: new[] { "CreatedAt", "IsDeleted" },
-                values: new object[] { new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6642), false });
+                values: new object[] { new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(8982), false });
 
             migrationBuilder.UpdateData(
                 schema: "BASE",
@@ -73,7 +83,7 @@ namespace CoreMarket.Migrations
                 keyColumn: "Id",
                 keyValue: 5,
                 columns: new[] { "CreatedAt", "IsDeleted" },
-                values: new object[] { new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6644), false });
+                values: new object[] { new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(8987), false });
 
             migrationBuilder.UpdateData(
                 schema: "BASE",
@@ -81,7 +91,7 @@ namespace CoreMarket.Migrations
                 keyColumn: "Id",
                 keyValue: 6,
                 columns: new[] { "CreatedAt", "IsDeleted" },
-                values: new object[] { new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6647), false });
+                values: new object[] { new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(8992), false });
 
             migrationBuilder.UpdateData(
                 schema: "BASE",
@@ -89,7 +99,7 @@ namespace CoreMarket.Migrations
                 keyColumn: "Id",
                 keyValue: 7,
                 columns: new[] { "CreatedAt", "IsDeleted" },
-                values: new object[] { new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6650), false });
+                values: new object[] { new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(8997), false });
 
             migrationBuilder.UpdateData(
                 schema: "BASE",
@@ -97,7 +107,7 @@ namespace CoreMarket.Migrations
                 keyColumn: "Id",
                 keyValue: 8,
                 columns: new[] { "CreatedAt", "IsDeleted" },
-                values: new object[] { new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6652), false });
+                values: new object[] { new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(9002), false });
 
             migrationBuilder.UpdateData(
                 schema: "BASE",
@@ -105,7 +115,7 @@ namespace CoreMarket.Migrations
                 keyColumn: "Id",
                 keyValue: 9,
                 columns: new[] { "CreatedAt", "IsDeleted" },
-                values: new object[] { new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6655), false });
+                values: new object[] { new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(9007), false });
 
             migrationBuilder.UpdateData(
                 schema: "BASE",
@@ -113,7 +123,7 @@ namespace CoreMarket.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "CreatedAt", "IsDeleted" },
-                values: new object[] { new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6404), false });
+                values: new object[] { new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(8373), false });
 
             migrationBuilder.UpdateData(
                 schema: "BASE",
@@ -121,7 +131,7 @@ namespace CoreMarket.Migrations
                 keyColumn: "Id",
                 keyValue: 2,
                 columns: new[] { "CreatedAt", "IsDeleted" },
-                values: new object[] { new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6446), false });
+                values: new object[] { new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(8432), false });
 
             migrationBuilder.UpdateData(
                 schema: "BASE",
@@ -129,7 +139,7 @@ namespace CoreMarket.Migrations
                 keyColumn: "Id",
                 keyValue: 3,
                 columns: new[] { "CreatedAt", "IsDeleted" },
-                values: new object[] { new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6449), false });
+                values: new object[] { new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(8438), false });
 
             migrationBuilder.UpdateData(
                 schema: "BASE",
@@ -137,7 +147,7 @@ namespace CoreMarket.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "CreatedAt", "IsDeleted" },
-                values: new object[] { new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6691), false });
+                values: new object[] { new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(9072), false });
 
             migrationBuilder.UpdateData(
                 schema: "BASE",
@@ -145,7 +155,7 @@ namespace CoreMarket.Migrations
                 keyColumn: "Id",
                 keyValue: 2,
                 columns: new[] { "CreatedAt", "IsDeleted" },
-                values: new object[] { new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6695), false });
+                values: new object[] { new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(9079), false });
 
             migrationBuilder.UpdateData(
                 schema: "BASE",
@@ -153,7 +163,7 @@ namespace CoreMarket.Migrations
                 keyColumn: "Id",
                 keyValue: 3,
                 columns: new[] { "CreatedAt", "IsDeleted" },
-                values: new object[] { new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6698), false });
+                values: new object[] { new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(9084), false });
 
             migrationBuilder.UpdateData(
                 schema: "BASE",
@@ -161,7 +171,7 @@ namespace CoreMarket.Migrations
                 keyColumn: "Id",
                 keyValue: 4,
                 columns: new[] { "CreatedAt", "IsDeleted" },
-                values: new object[] { new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6700), false });
+                values: new object[] { new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(9089), false });
 
             migrationBuilder.UpdateData(
                 schema: "BASE",
@@ -169,31 +179,39 @@ namespace CoreMarket.Migrations
                 keyColumn: "Id",
                 keyValue: 5,
                 columns: new[] { "CreatedAt", "IsDeleted" },
-                values: new object[] { new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6703), false });
+                values: new object[] { new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(9093), false });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_Id",
+            migrationBuilder.AddForeignKey(
+                name: "FK_Brands_Categories_CategoryId",
+                schema: "BASE",
+                table: "Brands",
+                column: "CategoryId",
+                principalSchema: "BASE",
+                principalTable: "Categories",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Products_Brands_BrandId",
                 schema: "BASE",
                 table: "Products",
-                column: "Id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_IsDeleted",
-                schema: "BASE",
-                table: "Products",
-                column: "IsDeleted");
+                column: "BrandId",
+                principalSchema: "BASE",
+                principalTable: "Brands",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
-                name: "IX_Products_Id",
+            migrationBuilder.DropForeignKey(
+                name: "FK_Brands_Categories_CategoryId",
                 schema: "BASE",
-                table: "Products");
+                table: "Brands");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Products_IsDeleted",
+            migrationBuilder.DropForeignKey(
+                name: "FK_Products_Brands_BrandId",
                 schema: "BASE",
                 table: "Products");
 
@@ -347,6 +365,26 @@ namespace CoreMarket.Migrations
                 keyValue: 5,
                 column: "CreatedAt",
                 value: new DateTime(2024, 4, 9, 14, 53, 43, 103, DateTimeKind.Local).AddTicks(90));
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Brands_Categories_CategoryId",
+                schema: "BASE",
+                table: "Brands",
+                column: "CategoryId",
+                principalSchema: "BASE",
+                principalTable: "Categories",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Products_Brands_BrandId",
+                schema: "BASE",
+                table: "Products",
+                column: "BrandId",
+                principalSchema: "BASE",
+                principalTable: "Brands",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
         }
     }
 }

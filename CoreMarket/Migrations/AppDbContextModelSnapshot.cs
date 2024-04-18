@@ -70,7 +70,7 @@ namespace CoreMarket.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6630),
+                            CreatedAt = new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(8955),
                             IsDeleted = false,
                             Name = "Samsung"
                         },
@@ -78,7 +78,7 @@ namespace CoreMarket.Migrations
                         {
                             Id = 2,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6636),
+                            CreatedAt = new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(8970),
                             IsDeleted = false,
                             Name = "Apple"
                         },
@@ -86,7 +86,7 @@ namespace CoreMarket.Migrations
                         {
                             Id = 3,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6639),
+                            CreatedAt = new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(8976),
                             IsDeleted = false,
                             Name = "Sony"
                         },
@@ -94,7 +94,7 @@ namespace CoreMarket.Migrations
                         {
                             Id = 4,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6642),
+                            CreatedAt = new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(8982),
                             IsDeleted = false,
                             Name = "Zara"
                         },
@@ -102,7 +102,7 @@ namespace CoreMarket.Migrations
                         {
                             Id = 5,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6644),
+                            CreatedAt = new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(8987),
                             IsDeleted = false,
                             Name = "H&M"
                         },
@@ -110,7 +110,7 @@ namespace CoreMarket.Migrations
                         {
                             Id = 6,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6647),
+                            CreatedAt = new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(8992),
                             IsDeleted = false,
                             Name = "Tommy Hilfiger"
                         },
@@ -118,7 +118,7 @@ namespace CoreMarket.Migrations
                         {
                             Id = 7,
                             CategoryId = 3,
-                            CreatedAt = new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6650),
+                            CreatedAt = new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(8997),
                             IsDeleted = false,
                             Name = "Adidas"
                         },
@@ -126,7 +126,7 @@ namespace CoreMarket.Migrations
                         {
                             Id = 8,
                             CategoryId = 3,
-                            CreatedAt = new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6652),
+                            CreatedAt = new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(9002),
                             IsDeleted = false,
                             Name = "Nike"
                         },
@@ -134,7 +134,7 @@ namespace CoreMarket.Migrations
                         {
                             Id = 9,
                             CategoryId = 3,
-                            CreatedAt = new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6655),
+                            CreatedAt = new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(9007),
                             IsDeleted = false,
                             Name = "Puma"
                         });
@@ -185,7 +185,7 @@ namespace CoreMarket.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6404),
+                            CreatedAt = new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(8373),
                             Description = "Electronics",
                             IsDeleted = false,
                             Name = "Electronics"
@@ -193,7 +193,7 @@ namespace CoreMarket.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6446),
+                            CreatedAt = new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(8432),
                             Description = "Clothing",
                             IsDeleted = false,
                             Name = "Clothing"
@@ -201,7 +201,7 @@ namespace CoreMarket.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6449),
+                            CreatedAt = new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(8438),
                             Description = "Sports and Outdoors",
                             IsDeleted = false,
                             Name = "Sports and Outdoors"
@@ -254,10 +254,6 @@ namespace CoreMarket.Migrations
 
                     b.HasIndex("BrandId");
 
-                    b.HasIndex("Id");
-
-                    b.HasIndex("IsDeleted");
-
                     b.ToTable("Products", "BASE");
 
                     b.HasData(
@@ -265,7 +261,7 @@ namespace CoreMarket.Migrations
                         {
                             Id = 1,
                             BrandId = 1,
-                            CreatedAt = new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6691),
+                            CreatedAt = new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(9072),
                             IsDeleted = false,
                             Name = "S22 Ultra",
                             Price = 699.0,
@@ -275,7 +271,7 @@ namespace CoreMarket.Migrations
                         {
                             Id = 2,
                             BrandId = 2,
-                            CreatedAt = new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6695),
+                            CreatedAt = new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(9079),
                             IsDeleted = false,
                             Name = "Apple Watch 9",
                             Price = 449.0,
@@ -285,7 +281,7 @@ namespace CoreMarket.Migrations
                         {
                             Id = 3,
                             BrandId = 3,
-                            CreatedAt = new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6698),
+                            CreatedAt = new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(9084),
                             IsDeleted = false,
                             Name = "A95L",
                             Price = 2599.0,
@@ -295,7 +291,7 @@ namespace CoreMarket.Migrations
                         {
                             Id = 4,
                             BrandId = 4,
-                            CreatedAt = new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6700),
+                            CreatedAt = new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(9089),
                             IsDeleted = false,
                             Name = "STEPPJACKE",
                             Price = 69.950000000000003,
@@ -305,7 +301,7 @@ namespace CoreMarket.Migrations
                         {
                             Id = 5,
                             BrandId = 7,
-                            CreatedAt = new DateTime(2024, 4, 12, 13, 54, 14, 456, DateTimeKind.Local).AddTicks(6703),
+                            CreatedAt = new DateTime(2024, 4, 18, 15, 3, 10, 585, DateTimeKind.Local).AddTicks(9093),
                             IsDeleted = false,
                             Name = "Football shoe",
                             Price = 79.989999999999995,
@@ -318,7 +314,7 @@ namespace CoreMarket.Migrations
                     b.HasOne("CoreMarket.Models.Category", "Category")
                         .WithMany("brands")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
@@ -329,7 +325,7 @@ namespace CoreMarket.Migrations
                     b.HasOne("CoreMarket.Models.Brand", "Brand")
                         .WithMany("Products")
                         .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Brand");
