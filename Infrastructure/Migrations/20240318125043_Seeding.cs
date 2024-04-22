@@ -4,7 +4,7 @@
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace CoreMarket.Migrations;
+namespace Infrastructure.Migrations;
 
 /// <inheritdoc />
 public partial class Seeding : Migration

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace CoreMarket.Migrations
+namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class configuringSchema : Migration
