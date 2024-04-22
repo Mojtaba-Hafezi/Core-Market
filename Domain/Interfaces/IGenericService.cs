@@ -1,6 +1,6 @@
-﻿using CoreMarket.Models;
+﻿
 
-namespace CoreMarket.Interfaces;
+namespace Domain.Interfaces;
 
 public interface IGenericService<TEntity> where TEntity : class
 {

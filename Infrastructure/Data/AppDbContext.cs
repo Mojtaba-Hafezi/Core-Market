@@ -1,7 +1,9 @@
-﻿using CoreMarket.Models;
+﻿using CoreMarket.Data;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
-namespace CoreMarket.Data;
+namespace Infrastructure.Data;
 
 public class AppDbContext : DbContext
 {

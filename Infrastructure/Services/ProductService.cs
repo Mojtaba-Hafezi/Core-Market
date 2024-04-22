@@ -1,6 +1,7 @@
 ﻿using CoreMarket.Data;
-using CoreMarket.Models;
-using CoreMarket.Interfaces;
+using Domain.Entities;
+using Domain.Interfaces;
+using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Formats.Asn1;
 

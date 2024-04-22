@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using CoreMarket.DTOs;
-using CoreMarket.Models;
+using API.DTOs;
+using Domain.Entities;
 
 namespace CoreMarket.Mapping;
 

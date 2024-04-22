@@ -1,8 +1,8 @@
-﻿using CoreMarket.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using CoreMarket.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using CoreMarket.Services;
-namespace CoreMarket.Controllers;
+using Domain.Interfaces;
+using Domain.Entities;
+namespace API.Controllers;
 
 public class BrandsController : Controller
 {

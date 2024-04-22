@@ -1,9 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Reflection.Metadata.Ecma335;
-using System.Security.Principal;
-using CoreMarket.EntitiesContracts;
+﻿using Domain.EntitiesContracts;
 
-namespace CoreMarket.Models;
+namespace Domain.Entities;
 
 public class Product : BaseEntity
 {

@@ -1,5 +1,5 @@
 ﻿
-namespace CoreMarket.EntitiesContracts;
+namespace Domain.EntitiesContracts;
 
 public abstract class BaseEntity : IDeletableEntity, IAuditableEntity
 {

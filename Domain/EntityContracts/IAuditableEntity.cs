@@ -1,4 +1,4 @@
-﻿namespace CoreMarket.EntitiesContracts;
+﻿namespace Domain.EntitiesContracts;
 
 public interface IAuditableEntity
 {

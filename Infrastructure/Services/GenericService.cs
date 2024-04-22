@@ -1,6 +1,6 @@
-﻿using CoreMarket.Data;
-using CoreMarket.EntitiesContracts;
-using CoreMarket.Interfaces;
+﻿using Domain.EntitiesContracts;
+using Domain.Interfaces;
+using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoreMarket.Services;

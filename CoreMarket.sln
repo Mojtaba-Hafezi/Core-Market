@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreMarket", "CoreMarket\CoreMarket.csproj", "{625C31C7-7E9B-47B6-919D-E0C9BDA946CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "CoreMarket\API.csproj", "{625C31C7-7E9B-47B6-919D-E0C9BDA946CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{E977B2FC-3CAD-4614-8CEA-391CE6B32119}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{48FCC28A-78AC-4CF7-A92F-D1307366850C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{625C31C7-7E9B-47B6-919D-E0C9BDA946CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{625C31C7-7E9B-47B6-919D-E0C9BDA946CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{625C31C7-7E9B-47B6-919D-E0C9BDA946CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E977B2FC-3CAD-4614-8CEA-391CE6B32119}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E977B2FC-3CAD-4614-8CEA-391CE6B32119}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E977B2FC-3CAD-4614-8CEA-391CE6B32119}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E977B2FC-3CAD-4614-8CEA-391CE6B32119}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48FCC28A-78AC-4CF7-A92F-D1307366850C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48FCC28A-78AC-4CF7-A92F-D1307366850C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48FCC28A-78AC-4CF7-A92F-D1307366850C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48FCC28A-78AC-4CF7-A92F-D1307366850C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

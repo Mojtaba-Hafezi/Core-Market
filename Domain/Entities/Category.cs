@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using CoreMarket.EntitiesContracts;
+﻿using Domain.EntitiesContracts;
 
-namespace CoreMarket.Models;
+namespace Domain.Entities;
 
 public class Category:BaseEntity
 {

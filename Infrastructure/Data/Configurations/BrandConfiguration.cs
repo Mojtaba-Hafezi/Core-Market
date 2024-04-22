@@ -1,8 +1,8 @@
-﻿using CoreMarket.Models;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CoreMarket.Data.Configurations;
+namespace Infrastructure.Data.Configurations;
 
 internal class BrandConfiguration : IEntityTypeConfiguration<Brand>
 {

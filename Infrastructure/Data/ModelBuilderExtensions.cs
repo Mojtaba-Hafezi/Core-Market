@@ -1,4 +1,4 @@
-﻿using CoreMarket.Models;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoreMarket.Data;

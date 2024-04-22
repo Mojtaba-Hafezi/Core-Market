@@ -1,11 +1,11 @@
-using CoreMarket.Data;
-using CoreMarket.DTOs;
-using CoreMarket.ExceptionHandlers;
-using CoreMarket.Interfaces;
+using API.DTOs;
+using API.ExceptionHandlers;
 using CoreMarket.Services;
 using CoreMarket.Validators;
+using Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 

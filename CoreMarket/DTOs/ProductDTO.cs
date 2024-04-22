@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using CoreMarket.Models;
+﻿using Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 
-namespace CoreMarket.DTOs;
+namespace API.DTOs;
 
 public class ProductDTO
 {

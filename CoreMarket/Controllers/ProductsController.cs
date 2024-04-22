@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using CoreMarket.DTOs;
-using CoreMarket.Interfaces;
-using CoreMarket.Models;
+using API.DTOs;
+using Domain.Entities;
+using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CoreMarket.Controllers;
+namespace API.Controllers;
 
 [Route("[controller]")]
 [ApiController]

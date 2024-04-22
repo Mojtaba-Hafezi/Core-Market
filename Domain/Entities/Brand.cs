@@ -1,6 +1,6 @@
-﻿using CoreMarket.EntitiesContracts;
+﻿using Domain.EntitiesContracts;
 
-namespace CoreMarket.Models;
+namespace Domain.Entities;
 
 public class Brand : BaseEntity
 {

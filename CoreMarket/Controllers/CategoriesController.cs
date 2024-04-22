@@ -1,8 +1,8 @@
-﻿using CoreMarket.Interfaces;
-using CoreMarket.Models;
+﻿using Domain.Entities;
+using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CoreMarket.Controllers;
+namespace API.Controllers;
 
 public class CategoriesController : Controller
 {

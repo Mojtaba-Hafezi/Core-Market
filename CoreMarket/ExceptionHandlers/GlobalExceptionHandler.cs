@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CoreMarket.ExceptionHandlers;
+namespace API.ExceptionHandlers;
 
 public class GlobalExceptionHandler : IExceptionHandler
 {

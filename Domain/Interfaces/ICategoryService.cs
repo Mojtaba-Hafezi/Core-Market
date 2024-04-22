@@ -1,6 +1,6 @@
-﻿using CoreMarket.Models;
+﻿using Domain.Entities;
 
-namespace CoreMarket.Interfaces;
+namespace Domain.Interfaces;
 
 public interface ICategoryService
 {

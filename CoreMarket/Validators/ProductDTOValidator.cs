@@ -1,4 +1,4 @@
-﻿using CoreMarket.DTOs;
+﻿using API.DTOs;
 using FluentValidation;
 
 namespace CoreMarket.Validators;
