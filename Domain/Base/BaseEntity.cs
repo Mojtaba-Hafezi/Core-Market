@@ -1,5 +1,6 @@
-﻿
-namespace Domain.EntitiesContracts;
+﻿using Domain.EntitiesContracts;
+
+namespace Domain.Base;
 
 public abstract class BaseEntity : IDeletableEntity, IAuditableEntity
 {

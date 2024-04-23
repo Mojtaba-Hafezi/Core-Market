@@ -1,4 +1,4 @@
-﻿using Domain.EntitiesContracts;
+﻿using Domain.Base;
 using Domain.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
