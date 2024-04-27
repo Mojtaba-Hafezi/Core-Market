@@ -10,20 +10,17 @@ public class AppDbContext : DbContext
     public DbSet<Category> Categories { get; set; }
     public DbSet<Brand> Brands { get; set; }
 
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    private readonly IConfiguration _configuration;
+    public AppDbContext(DbContextOptions<AppDbContext> options, IConfiguration configuration) : base(options)
     {
-
+        _configuration = configuration;
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var config = new ConfigurationBuilder()
-            .AddJsonFile(Path.Combine(AppContext.BaseDirectory, "appsettings.json")
-            , optional: false, reloadOnChange: true)
-            .Build();
-
+        
         optionsBuilder.UseSqlServer(
-            config.GetConnectionString("CoreMarketConnection"), x=>x.MigrationsHistoryTable("MigrationsHistory","BASE")
+            _configuration.GetValue<string>("CoreMarketConnection"), x=>x.MigrationsHistoryTable("MigrationsHistory","BASE")
             );
     }
 

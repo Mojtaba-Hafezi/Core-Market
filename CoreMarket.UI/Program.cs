@@ -18,7 +18,7 @@ builder.Services.AddControllers().AddFluentValidation(v =>
     v.ImplicitlyValidateRootCollectionElements = true;
     v.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 });
-var connectionString = builder.Configuration.GetConnectionString("CoreMarketConnection");
+var connectionString = builder.Configuration.GetValue<string>("CoreMarketConnection");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddHttpLogging(logging => { });
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
