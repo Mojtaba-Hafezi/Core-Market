@@ -1,2 +1,2 @@
-This is a Asp.Net Core Web Api for purchasing the product. Shopping basket is not implemented yet. 
-For the connection string in "appsettings.json" file i used a connection string that works with local MSSQL database. You can replace the connection string with yours. Then in PMC (package manager console) apply database-update to apply the migrations and seeding the initial data in database.
+This is an Implementation of Clean Architecture with ASP.NET Core 8 WebApi. With this Open-Source BoilerPlate Template, you will get access to the world of Loosely-Coupled and Inverted-Dependency Architecture in ASP.NET Core 8 WebApi
+For Adding Your Connection String (in Development phase) please add a user-sercret file with visual-studio and locate your connection string there. Then in PMC (package manager console) use command: database-update to apply the migrations and seeding the initial data in the database.
