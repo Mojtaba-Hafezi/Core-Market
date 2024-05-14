@@ -4,6 +4,7 @@ using Infrastructure.Persistance.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,12 @@ namespace Infrastructure.Persistance.Extensions
     {
         public static void AddPersistenceInfrastructure(this IServiceCollection services, IConfiguration config)
         {
-            var connectionString = config.GetValue<string>("CoreMarketConnection");
+            var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+            var dbName = Environment.GetEnvironmentVariable("DB_NAME");
+            var dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
+
+            var connectionString = $"Data Source={dbHost};Initial Catalog={dbName};User ID=sa;Password={dbPassword}; TrustServerCertificate=True;";
+
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
             #region Repositories
