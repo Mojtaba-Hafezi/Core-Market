@@ -39,6 +39,7 @@ app.UseExceptionHandler();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+    app.ApplyMigrations();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
