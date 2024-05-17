@@ -33,7 +33,7 @@ public class ProductsController : ControllerBase
 
 
     [HttpGet]
-    [Route("{id:int}", Name = "GetByIdAsync")]
+    [Route("{id:int}", Name = "GetById")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -65,14 +65,15 @@ public class ProductsController : ControllerBase
 
         if (brand is null)
             return NotFound($"The brand was not found for id = {productDTO.BrandId}");
+                
 
-        Product test = _mapper.Map<Product>(productDTO);
-        int? productId = await _productsService.AddAsync(test);
+        Product product = _mapper.Map<Product>(productDTO);
+        int? productId = await _productsService.AddAsync(product);
 
         if (productId is not null)
-            return CreatedAtRoute("GetByIdAsync", new { id = productId }, productDTO);
+            return CreatedAtRoute("GetById", new { id = productId }, productDTO);
 
-        return StatusCode(500, $"An error occured! The product couldn't be added to the database");
+        return StatusCode(500, "An error occured! The product couldn't be added to the database");
     }
 
 
