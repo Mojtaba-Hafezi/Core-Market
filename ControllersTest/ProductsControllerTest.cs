@@ -36,7 +36,8 @@ namespace ControllersTest
             BrandId = 1,
             Name = "Test Product",
             Quantity = 100,
-            Price = 100
+            Price = 100,
+            CreatedAt = DateTime.Now
         };
 
         private ProductDTO CreateProductDTO() => new ProductDTO
@@ -133,14 +134,21 @@ namespace ControllersTest
         public async Task GetAll_Successfully()
         {
             // Arrange
+            DateTime createdDateTime = DateTime.Now;
+
+            Product product = CreateProduct();
+            product.CreatedAt = createdDateTime;
+
+            Product expectedProductInProductList = CreateProduct();
+            expectedProductInProductList.CreatedAt = createdDateTime;
             List<Product> productsList = new List<Product>
             {
-                CreateProduct()
+                product
             };
 
             List<Product> expectedProductsList = new List<Product>
             {
-                CreateProduct()
+                expectedProductInProductList
             };
 
             _productService.Setup(x => x.GetAllAsync()).ReturnsAsync(productsList);
@@ -206,6 +214,7 @@ namespace ControllersTest
         {
             // Arrange
             int id = 1;
+            string expectedMessage = $"The product with id={id} was not found";
             Product? product = null;
             _productService.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(product);
 
@@ -214,7 +223,7 @@ namespace ControllersTest
 
             // Assert
             var notFountResult = Assert.IsType<NotFoundObjectResult>(result);
-            Assert.Equal($"The product with id={id} was not found", notFountResult.Value);
+            Assert.Equal(expectedMessage, notFountResult.Value);
         }
 
         [Fact]
@@ -222,8 +231,13 @@ namespace ControllersTest
         {
             // Arrange
             int id = 1;
+            DateTime createdDateTime = DateTime.Now;
+
             Product product = CreateProduct();
+            product.CreatedAt = createdDateTime;
+
             Product expectedProduct = CreateProduct();
+            expectedProduct.CreatedAt = createdDateTime;
             _productService.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(product);
 
             // Act
@@ -246,7 +260,99 @@ namespace ControllersTest
             Assert.Equal(expectedProduct.ModifiedByUserId, returnedProdut.ModifiedByUserId);
         }
 
+        [Fact]
+        public async Task Delete_IdIsNotPositive()
+        {
+            // Arrange
+            int id = 0;
+            string expectedMessage = "The id should be an integer greater than zero";
+            Product product = CreateProduct();
 
+            // Act
+            var result = await _sut.Delete(id);
+
+            // Assert
+            var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Equal(expectedMessage, badRequestObjectResult.Value);
+        }
+
+        [Fact]
+        public async Task Delete_ProductDoesNotExist()
+        {
+            // Arrange
+            int id = 1;
+            string expectedMessage = $"The product with id={id} was not found";
+            Product? product = null;
+            _productService.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(product);
+
+            // Act
+            var result = await _sut.Delete(id);
+
+            // Assert
+            var notFountResult = Assert.IsType<NotFoundObjectResult>(result);
+            Assert.Equal(expectedMessage, notFountResult.Value);
+        }
+
+        [Fact]
+        public async Task Delete_ProductIsDeletedAlready()
+        {
+            // Arrange
+            int id = 1;
+            string expectedMessage = $"The product with id={id} has beed deleted already";
+            var expectedStatusCode = StatusCodes.Status410Gone;
+            Product product = CreateProduct();
+            product.DeletedAt = DateTime.Now;
+            _productService.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(product);
+
+            //Act
+            var result = await _sut.Delete(id);
+
+            //Assert
+            var objectResult = Assert.IsType<ObjectResult>(result);
+            Assert.Equal(expectedMessage, objectResult.Value);
+            Assert.Equal(expectedStatusCode, objectResult.StatusCode);
+        }
+
+        [Fact]
+        public async Task Delete_Successfully()
+        {
+            // Arrange
+            int id = 1;
+            Product product = CreateProduct();
+            _productService.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(product);
+            _productService.Setup(x => x.DeleteAsync(id)).ReturnsAsync(true);
+
+
+            // Act
+            var result = await _sut.Delete(id);
+
+
+            // Assert
+            Assert.IsType<OkResult>(result);
+
+        }
+
+        [Fact]
+        public async Task Delete_InternalServerError()
+        {
+            // Arrange
+            int id = 1;
+            string expectedMessage = "An error occured! The product couldn't be deleted from database";
+            var expectedStatusCode = StatusCodes.Status500InternalServerError;
+            Product product = CreateProduct();
+            _productService.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(product);
+            _productService.Setup(x => x.DeleteAsync(id)).ReturnsAsync(false);
+
+
+            // Act
+            var result = await _sut.Delete(id);
+
+
+            // Assert
+            var objectResult = Assert.IsType<ObjectResult>(result);
+            Assert.Equal(expectedStatusCode, objectResult.StatusCode);
+            Assert.Equal(expectedMessage, objectResult.Value);
+        }
     }
 
 }

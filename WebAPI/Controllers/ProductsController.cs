@@ -101,7 +101,7 @@ public class ProductsController : ControllerBase
             return StatusCode(410, $"The product with id={id} has beed deleted already");
 
         if (await _productsService.DeleteAsync(id))
-            return Ok();
+        return Ok();
 
         return StatusCode(500, "An error occured! The product couldn't be deleted from database");
     }
