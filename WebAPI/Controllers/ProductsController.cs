@@ -23,12 +23,14 @@ public class ProductsController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
     public async Task<ActionResult<IEnumerable<Product>>> GetAll()
     {
-        var products = await _productsService.GetAllAsync();
+
+        List<Product> products = (List<Product>) await _productsService.GetAllAsync();
         return Ok(products);
+
     }
 
 
@@ -37,14 +39,14 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-    public async Task<ActionResult<Product>> GetById([FromRoute] int id)
+    public async Task<ActionResult> GetById([FromRoute] int id)
     {
         if (id <= 0)
             return BadRequest("The id should be an integer greater than zero");
 
-        Product product = await _productsService.GetByIdAsync(id);
+        Product? product = await _productsService.GetByIdAsync(id);
 
         if (product is null)
             return NotFound($"The product with id={id} was not found");
@@ -57,23 +59,23 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
     public async Task<ActionResult> Add([FromBody] ProductDTO productDTO)
     {
-        Brand brand = await _brandService.GetByIdAsync(productDTO.BrandId);
+        Brand? brand = await _brandService.GetByIdAsync(productDTO.BrandId);
 
         if (brand is null)
             return NotFound($"The brand was not found for id = {productDTO.BrandId}");
-                
+
 
         Product product = _mapper.Map<Product>(productDTO);
         int? productId = await _productsService.AddAsync(product);
 
-        if (productId is not null)
-            return CreatedAtRoute("GetById", new { id = productId }, productDTO);
+        //if (productId is not null)
+        return CreatedAtRoute("GetById", new { id = productId }, productDTO);
 
-        return StatusCode(500, "An error occured! The product couldn't be added to the database");
+        //return StatusCode(500, "An error occured! The product couldn't be added to the database");
     }
 
 
@@ -90,7 +92,7 @@ public class ProductsController : ControllerBase
         if (id <= 0)
             return BadRequest("The id should be an integer greater than zero");
 
-        Product product = await _productsService.GetByIdAsync(id);
+        Product? product = await _productsService.GetByIdAsync(id);
 
         if (product is null)
             return NotFound($"The product with id={id} was not found");
@@ -118,7 +120,7 @@ public class ProductsController : ControllerBase
         if (id <= 0)
             return BadRequest("The id should be an integer greater than zero");
 
-        Product productToUpdate = await _productsService.GetByIdAsync(id);
+        Product? productToUpdate = await _productsService.GetByIdAsync(id);
 
         if (productToUpdate is null)
             return NotFound($"The product with id={id} was not found");
