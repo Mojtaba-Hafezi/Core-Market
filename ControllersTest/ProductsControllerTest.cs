@@ -56,6 +56,8 @@ namespace ControllersTest
             Products = new List<Product> { CreateProduct() }
         };
 
+        #region Add
+
         [Fact]
         public async Task Add_BrandDoesNotExist()
         {
@@ -130,6 +132,9 @@ namespace ControllersTest
             Assert.Equal(productDTO.Price, returnValue.Price);
         }
 
+        #endregion
+
+        #region GetAll
         [Fact]
         public async Task GetAll_Successfully()
         {
@@ -192,8 +197,9 @@ namespace ControllersTest
         //    var statusCodeResult = Assert.IsType<ObjectResult>(result.Result);
         //    Assert.Equal(StatusCodes.Status500InternalServerError, statusCodeResult.StatusCode);
         //}
+        #endregion
 
-
+        #region GetById
         [Fact]
         public async Task GetById_IdIsNotPositive()
         {
@@ -259,14 +265,15 @@ namespace ControllersTest
             Assert.Equal(expectedProduct.ModifiedAt, returnedProdut.ModifiedAt);
             Assert.Equal(expectedProduct.ModifiedByUserId, returnedProdut.ModifiedByUserId);
         }
+        #endregion
 
+        #region Delete
         [Fact]
         public async Task Delete_IdIsNotPositive()
         {
             // Arrange
             int id = 0;
             string expectedMessage = "The id should be an integer greater than zero";
-            Product product = CreateProduct();
 
             // Act
             var result = await _sut.Delete(id);
@@ -289,8 +296,8 @@ namespace ControllersTest
             var result = await _sut.Delete(id);
 
             // Assert
-            var notFountResult = Assert.IsType<NotFoundObjectResult>(result);
-            Assert.Equal(expectedMessage, notFountResult.Value);
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
+            Assert.Equal(expectedMessage, notFoundResult.Value);
         }
 
         [Fact]
@@ -353,6 +360,118 @@ namespace ControllersTest
             Assert.Equal(expectedStatusCode, objectResult.StatusCode);
             Assert.Equal(expectedMessage, objectResult.Value);
         }
+
+        #endregion
+
+        #region Update
+        [Fact]
+        public async Task Update_IdIsNotPositive()
+        {
+            // Arrange
+            int id = 0;
+            string expectedMessage = "The id should be an integer greater than zero";
+            ProductDTO productDTO = CreateProductDTO();
+
+            // Act
+            var result = await _sut.Update(productDTO, id);
+
+            // Assert
+            var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Equal(expectedMessage, badRequestObjectResult.Value);
+        }
+
+        [Fact]
+        public async Task Update_ProductDoesNotExist()
+        {
+            // Arrange
+            int id = 1;
+            string expectedMessage = $"The product with id={id} was not found";
+            ProductDTO productDTO = CreateProductDTO();
+            Product? product = null;
+            _productService.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(product);
+
+            // Act
+            var result = await _sut.Update(productDTO, id);
+
+            // Assert
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
+            Assert.Equal(expectedMessage, notFoundResult.Value);
+        }
+
+        [Fact]
+        public async Task Update_ProductIsDeleted()
+        {
+            // Arrange
+            int id = 1;
+            string expectedMessage = $"The product with id={id} has beed deleted";
+            var expectedStatusCode = StatusCodes.Status410Gone;
+            ProductDTO productDTO = CreateProductDTO();
+            Product product = CreateProduct();
+            product.DeletedAt = DateTime.Now;
+            _productService.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(product);
+
+            //Act
+            var result = await _sut.Update(productDTO, id);
+
+            //Assert
+            var objectResult = Assert.IsType<ObjectResult>(result);
+            Assert.Equal(expectedMessage, objectResult.Value);
+            Assert.Equal(expectedStatusCode, objectResult.StatusCode);
+        }
+
+        [Fact]
+        public async Task Update_Successfully()
+        {
+            // Arrange
+            int id = 1;
+            ProductDTO productDTO = CreateProductDTO();
+            DateTime createdDateTime = DateTime.Now;
+            Product productFromGetByIdService = CreateProduct();
+            productFromGetByIdService.CreatedAt = createdDateTime;
+            Product productFromMapper = CreateProduct();
+            productFromMapper.CreatedAt = createdDateTime;
+            _productService.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(productFromGetByIdService);
+            _mapper.Setup(x => x.Map<Product>(productDTO)).Returns(productFromMapper);
+            _productService.Setup(x => x.UpdateAsync(productFromMapper)).ReturnsAsync(true);
+
+            // Act
+            var result = await _sut.Update(productDTO, id);
+
+            // Assert
+            var okResult = Assert.IsType<OkResult>(result);
+
+        }
+
+        [Fact]
+        public async Task Update_InternalServerError()
+        {
+            // Arrange
+            int id = 1;
+            string expectedMessage = "An error occured! The product couldn't be updated in database";
+            var expectedStatusCode = StatusCodes.Status500InternalServerError;
+            ProductDTO productDTO = CreateProductDTO();
+            DateTime createdDateTime = DateTime.Now;
+            Product productFromGetByIdService = CreateProduct();
+            productFromGetByIdService.CreatedAt = createdDateTime;
+            Product productFromMapper = CreateProduct();
+            productFromMapper.CreatedAt = createdDateTime;
+            _productService.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(productFromGetByIdService);
+            _mapper.Setup(x => x.Map<Product>(productDTO)).Returns(productFromMapper);
+            _productService.Setup(x => x.UpdateAsync(productFromMapper)).ReturnsAsync(false);
+
+
+
+            // Act
+            var result = await _sut.Update(productDTO, id);
+
+
+            // Assert
+            var objectResult = Assert.IsType<ObjectResult>(result);
+            Assert.Equal(expectedStatusCode, objectResult.StatusCode);
+            Assert.Equal(expectedMessage, objectResult.Value);
+        }
+
+        #endregion
     }
 
 }
