@@ -36,4 +36,9 @@ public class ProductService : IProductService
     {
         return _productRepository.UpdateAsync(product);
     }
+
+    public Task<int> HardDelete()
+    {
+        return _productRepository.HardDelete();
+    }
 }

@@ -472,6 +472,27 @@ namespace ControllersTest
         }
 
         #endregion
+
+        #region HardDeleteAllSoftDeleted
+        [Fact]
+        public async Task HardDeleteAllSoftDeletedSuccessfully()
+        {
+            // Arrange 
+            int deletedProductsCount = 3;
+            string expectedMessage = $"{deletedProductsCount} product(s) have been deleted!";
+            _productService.Setup(x => x.HardDelete()).ReturnsAsync(deletedProductsCount);
+
+
+            // Act
+            var result = await _sut.HardDeleteAllSoftDeleted();
+
+
+            // Assert
+            var okObjectResult = Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(expectedMessage, okObjectResult.Value);
+        }
+
+        #endregion
     }
 
 }

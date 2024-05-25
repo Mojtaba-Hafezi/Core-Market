@@ -28,7 +28,7 @@ public class ProductsController : ControllerBase
     public async Task<ActionResult<IEnumerable<Product>>> GetAll()
     {
 
-        List<Product> products = (List<Product>) await _productsService.GetAllAsync();
+        List<Product> products = (List<Product>)await _productsService.GetAllAsync();
         return Ok(products);
 
     }
@@ -101,7 +101,7 @@ public class ProductsController : ControllerBase
             return StatusCode(410, $"The product with id={id} has beed deleted already");
 
         if (await _productsService.DeleteAsync(id))
-        return Ok();
+            return Ok();
 
         return StatusCode(500, "An error occured! The product couldn't be deleted from database");
     }
@@ -135,5 +135,14 @@ public class ProductsController : ControllerBase
             return Ok();
 
         return StatusCode(500, "An error occured! The product couldn't be updated in database");
+    }
+
+    [HttpDelete]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult> HardDeleteAllSoftDeleted()
+    {
+        int deletedProductsCount = await _productsService.HardDelete();
+        return Ok($"{deletedProductsCount} product(s) have been deleted!");
     }
 }
