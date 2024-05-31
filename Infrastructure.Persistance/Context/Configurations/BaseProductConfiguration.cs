@@ -4,21 +4,16 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistance.Context.Configurations;
 
-internal class ProductConfiguration : IEntityTypeConfiguration<Product>
+internal class BaseProductConfiguration : IEntityTypeConfiguration<BaseProduct>
 {
-    public void Configure(EntityTypeBuilder<Product> builder)
+    public void Configure(EntityTypeBuilder<BaseProduct> builder)
     {
         builder.HasKey(p => p.Id);
 
-        builder.HasIndex(p => p.Id);
-
-        builder.HasIndex(p => p.IsDeleted);
-
-        builder.HasIndex(p => p.BrandId);
-
         builder.HasOne<Brand>(p => p.Brand)
-            .WithMany(b => b.Products)
+            .WithMany(b => b.BaseProducts)
             .HasForeignKey(p => p.BrandId)
             .OnDelete(DeleteBehavior.Restrict);
+
     }
 }

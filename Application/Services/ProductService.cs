@@ -12,29 +12,29 @@ public class ProductService : IProductService
         _productRepository = productRepository;
     }
 
-    public Task<int?> AddAsync(Product product)
+    public async Task<int?> AddAsync(BaseProduct product)
     {
-        return _productRepository.AddAsync(product);
+        return await _productRepository.AddAsync(product);
     }
 
-    public Task<bool> DeleteAsync(int id)
+    public async Task<bool> DeleteAsync(int id)
     {
-        return _productRepository.DeleteAsync(id);
+        return await _productRepository.DeleteAsync(id);
     }
 
-    public Task<IEnumerable<Product>> GetAllAsync()
+    public async Task<IEnumerable<BaseProduct>> GetAllAsync()
     {
-        return _productRepository.GetAllAsync();
+        return await _productRepository.GetAllAsync();
     }
 
-    public Task<Product?> GetByIdAsync(int id)
+    public async Task<BaseProduct?> GetByIdAsync(int id)
     {
-        return _productRepository.GetByIdAsync(id);
+        return await _productRepository.GetByIdAsync(id);
     }
 
-    public Task<bool> UpdateAsync(Product product)
+    public async Task<bool> UpdateAsync(BaseProduct product)
     {
-        return _productRepository.UpdateAsync(product);
+        return await _productRepository.UpdateAsync(product);
     }
 
     public Task<int> HardDelete()

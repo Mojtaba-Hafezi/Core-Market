@@ -26,12 +26,17 @@ public static class ModelBuilderExtensions
             );
 
 
-        modelBuilder.Entity<Product>().HasData(
-            new Product { Id = 1, BrandId = 1, Name = "S22 Ultra", Quantity = 30, Price = 699, CreatedAt = DateTime.Now },
-            new Product { Id = 2, BrandId = 2, Name = "Apple Watch 9", Quantity = 50, Price = 449, CreatedAt = DateTime.Now },
-            new Product { Id = 3, BrandId = 3, Name = "A95L", Quantity = 10, Price = 2599, CreatedAt = DateTime.Now },
-            new Product { Id = 4, BrandId = 4, Name = "STEPPJACKE", Quantity = 250, Price = 69.95, CreatedAt = DateTime.Now },
-            new Product { Id = 5, BrandId = 7, Name = "Football shoe", Quantity = 150, Price = 79.99, CreatedAt = DateTime.Now }
+        modelBuilder.Entity<PhysicalProduct>().HasData(
+            new PhysicalProduct { Id = 1, BrandId = 1, Name = "S22 Ultra", Weight = 0.21, Quantity = 30, Price = 699, CreatedAt = DateTime.Now },
+            new PhysicalProduct { Id = 2, BrandId = 2, Name = "Apple Watch 9", Weight = 0.08, Quantity = 50, Price = 449, CreatedAt = DateTime.Now },
+            new PhysicalProduct { Id = 3, BrandId = 3, Name = "A95L", Weight = 40, Quantity = 10, Price = 2599, CreatedAt = DateTime.Now },
+            new PhysicalProduct { Id = 4, BrandId = 4, Name = "STEPPJACKE", Weight = 1.25, Quantity = 250, Price = 69.95, CreatedAt = DateTime.Now },
+            new PhysicalProduct { Id = 5, BrandId = 7, Name = "Football shoe", Weight = 0.07, Quantity = 150, Price = 79.99, CreatedAt = DateTime.Now }
+            );
+
+        modelBuilder.Entity<DigitalProduct>().HasData(
+            new DigitalProduct { Id = 6, BrandId = 2, Name = "Becoming", FileSize = 25, Price = 14.99, CreatedAt = DateTime.Now },
+            new DigitalProduct { Id = 7, BrandId = 2, Name = "The Great Gatsby", FileSize = 2, Price = 10.99, CreatedAt = DateTime.Now }
             );
     }
 }

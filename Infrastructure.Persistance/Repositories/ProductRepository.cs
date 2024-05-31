@@ -3,12 +3,11 @@ using Domain.Entities;
 using Infrastructure.Persistance.Context;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using System.Data;
 
 namespace Infrastructure.Persistance.Repositories;
 
-public class ProductRepository : GenericRepository<Product>, IProductRepository
+public class ProductRepository : GenericRepository<BaseProduct>, IProductRepository
 {
     private readonly IConfiguration _configuration;
     public ProductRepository(AppDbContext appDbContext, IConfiguration configuration) : base(appDbContext)
@@ -26,4 +25,5 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
         connection.Close();
         return deletedProductsCount;
     }
+
 }

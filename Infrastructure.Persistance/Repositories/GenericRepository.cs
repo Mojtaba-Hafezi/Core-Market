@@ -1,7 +1,9 @@
 ﻿using Application.RepositoryContracts;
+using Domain.Entities;
 using Domain.Entities.EntityContracts;
 using Infrastructure.Persistance.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace Infrastructure.Persistance.Repositories;
 

@@ -9,5 +9,5 @@ public class Brand : BaseEntity
     public int CategoryId { get; set; }
     public Category Category { get; set; }
 
-    public List<Product> Products { get; set; } = new List<Product>();
+    public List<BaseProduct> BaseProducts { get; set; } = new List<BaseProduct>();
 }

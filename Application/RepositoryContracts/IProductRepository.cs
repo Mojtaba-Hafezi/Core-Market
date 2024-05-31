@@ -3,7 +3,7 @@
 namespace Application.RepositoryContracts;
 
 
-public interface IProductRepository : IGenericRepository<Product>
+public interface IProductRepository : IGenericRepository<BaseProduct>
 {
     Task<int> HardDelete();
 }

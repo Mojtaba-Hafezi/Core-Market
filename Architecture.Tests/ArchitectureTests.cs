@@ -13,7 +13,7 @@ namespace Architecture.Tests
         public void Domain_Should_Not_HaveDependencyOnOtherProjects()
         {
             //Arrange
-            var assembly = typeof(Domain.Entities.Product).Assembly;
+            var assembly = typeof(Domain.Entities.BaseProduct).Assembly;
 
             string[] otherProjects = new[]
             {

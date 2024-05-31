@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Moq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -30,21 +31,42 @@ namespace ControllersTest
             _sut = new ProductsController(_productService.Object, _brandService.Object, _mapper.Object);
         }
 
-        private Product CreateProduct() => new Product
+        private PhysicalProduct CreatePhysicalProduct() => new PhysicalProduct
         {
             Id = 1,
             BrandId = 1,
             Name = "Test Product",
             Quantity = 100,
+            Weight = 2,
             Price = 100,
             CreatedAt = DateTime.Now
         };
 
-        private ProductDTO CreateProductDTO() => new ProductDTO
+        private DigitalProduct CreateDigitalProduct() => new DigitalProduct
+        {
+            Id = 1,
+            BrandId = 1,
+            Name = "Test Product",
+            FileSize = 6,
+            Price = 100,
+            CreatedAt = DateTime.Now
+        };
+
+        private ProductDTO CreateProductDTOForDigitalProduct() => new ProductDTO
+        {
+            BrandId = 1,
+            Name = "Test ProductDTO",
+            FileSize = 20,
+            Price = 100
+        };
+
+        private ProductDTO CreateProductDTOForPhysicalProduct() => new ProductDTO
         {
             BrandId = 1,
             Name = "Test ProductDTO",
             Quantity = 100,
+            Weight = 7,
+            FileSize = 20,
             Price = 100
         };
 
@@ -53,16 +75,35 @@ namespace ControllersTest
             Id = 1,
             Name = "Test Brand",
             CategoryId = 1,
-            Products = new List<Product> { CreateProduct() }
+            BaseProducts = new List<BaseProduct>
+            {
+                CreatePhysicalProduct(),
+                CreateDigitalProduct()
+            }
         };
 
         #region Add
+        [Fact]
+        public async Task Add_ProductTypeIsNotValid()
+        {
+            // Arrange
+            ProductDTO productDTO = CreateProductDTOForDigitalProduct();
+            productDTO.Weight = 3;
+            string expectedMessage = "Product should be either Physical or Digital!";
+
+            // Act
+            var result = await _sut.Add(productDTO);
+
+            // Assert
+            var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Equal(expectedMessage, badRequestObjectResult.Value);
+        }
 
         [Fact]
         public async Task Add_BrandDoesNotExist()
         {
             // Arrange
-            ProductDTO productDTO = CreateProductDTO();
+            ProductDTO productDTO = CreateProductDTOForDigitalProduct();
             Brand? brand = null;
             string expectedMessage = $"The brand was not found for id = {productDTO.BrandId}";
             _brandService.Setup(x => x.GetByIdAsync(productDTO.BrandId)).ReturnsAsync(brand);
@@ -104,15 +145,15 @@ namespace ControllersTest
         public async Task Add_ProductAddedSuccessfully()
         {
             // Arrange
-            ProductDTO productDTO = CreateProductDTO();
+            ProductDTO productDTO = CreateProductDTOForDigitalProduct();
 
-            Product product = CreateProduct();
+            DigitalProduct product = CreateDigitalProduct();
             product.Id = 0;
 
             Brand brand = CreateBrand();
 
             _brandService.Setup(x => x.GetByIdAsync(brand.Id)).ReturnsAsync(brand);
-            _mapper.Setup(m => m.Map<Product>(productDTO)).Returns(product);
+            _mapper.Setup(m => m.Map<DigitalProduct>(productDTO)).Returns(product);
             int newProductId = 10;
             _productService.Setup(x => x.AddAsync(product)).ReturnsAsync(newProductId);
 
@@ -128,7 +169,7 @@ namespace ControllersTest
             var returnValue = Assert.IsType<ProductDTO>(createdAtRouteResult.Value);
             Assert.Equal(productDTO.BrandId, returnValue.BrandId);
             Assert.Equal(productDTO.Name, returnValue.Name);
-            Assert.Equal(productDTO.Quantity, returnValue.Quantity);
+            Assert.Equal(productDTO.FileSize, returnValue.FileSize);
             Assert.Equal(productDTO.Price, returnValue.Price);
         }
 
@@ -141,46 +182,66 @@ namespace ControllersTest
             // Arrange
             DateTime createdDateTime = DateTime.Now;
 
-            Product product = CreateProduct();
-            product.CreatedAt = createdDateTime;
+            DigitalProduct digitalProduct = CreateDigitalProduct();
+            digitalProduct.CreatedAt = createdDateTime;
 
-            Product expectedProductInProductList = CreateProduct();
-            expectedProductInProductList.CreatedAt = createdDateTime;
-            List<Product> productsList = new List<Product>
+            PhysicalProduct physicalProduct = CreatePhysicalProduct();
+            digitalProduct.CreatedAt = createdDateTime;
+
+
+            List<BaseProduct> expectedProductsList = new List<BaseProduct>
             {
-                product
+                digitalProduct,
+                physicalProduct
             };
 
-            List<Product> expectedProductsList = new List<Product>
-            {
-                expectedProductInProductList
-            };
-
-            _productService.Setup(x => x.GetAllAsync()).ReturnsAsync(productsList);
-
+            _productService.Setup(x => x.GetAllAsync()).ReturnsAsync(expectedProductsList);
             // Act
             var result = await _sut.GetAll();
 
             // Assert
             var okObjectResult = Assert.IsType<OkObjectResult>(result.Result);
 
-            var returnedProducts = Assert.IsType<List<Product>>(okObjectResult.Value);
+            var returnedProducts = Assert.IsType<ArrayList>(okObjectResult.Value);
 
-            Assert.Equal(productsList.Count, returnedProducts.Count);
-            for (int i = 0; i < productsList.Count; i++)
+            Assert.Equal(expectedProductsList.Count, returnedProducts.Count);
+            for (int i = 0; i < expectedProductsList.Count; i++)
             {
-                Assert.Equal(expectedProductsList[i].Id, returnedProducts[i].Id);
-                Assert.Equal(expectedProductsList[i].Name, returnedProducts[i].Name);
-                Assert.Equal(expectedProductsList[i].BrandId, returnedProducts[i].BrandId);
-                Assert.Equal(expectedProductsList[i].Quantity, returnedProducts[i].Quantity);
-                Assert.Equal(expectedProductsList[i].Price, returnedProducts[i].Price);
-                Assert.Equal(expectedProductsList[i].CreatedAt, returnedProducts[i].CreatedAt);
-                Assert.Equal(expectedProductsList[i].CreatedByUserId, returnedProducts[i].CreatedByUserId);
-                Assert.Equal(expectedProductsList[i].IsDeleted, returnedProducts[i].IsDeleted);
-                Assert.Equal(expectedProductsList[i].DeletedAt, returnedProducts[i].DeletedAt);
-                Assert.Equal(expectedProductsList[i].DeletedByUserId, returnedProducts[i].DeletedByUserId);
-                Assert.Equal(expectedProductsList[i].ModifiedAt, returnedProducts[i].ModifiedAt);
-                Assert.Equal(expectedProductsList[i].ModifiedByUserId, returnedProducts[i].ModifiedByUserId);
+                if (returnedProducts[i].GetType() == typeof(DigitalProduct))
+                {
+                    DigitalProduct returnedProduct  = (DigitalProduct)returnedProducts[i];
+                    DigitalProduct expectedProduct = (DigitalProduct)expectedProductsList[i];
+                    Assert.Equal(expectedProduct.Id, returnedProduct.Id);
+                    Assert.Equal(expectedProduct.Name, returnedProduct.Name);
+                    Assert.Equal(expectedProduct.BrandId, returnedProduct.BrandId);
+                    Assert.Equal(expectedProduct.Price, returnedProduct.Price);
+                    Assert.Equal(expectedProduct.FileSize, returnedProduct.FileSize);
+                    Assert.Equal(expectedProduct.CreatedAt, returnedProduct.CreatedAt);
+                    Assert.Equal(expectedProduct.CreatedByUserId, returnedProduct.CreatedByUserId);
+                    Assert.Equal(expectedProduct.IsDeleted, returnedProduct.IsDeleted);
+                    Assert.Equal(expectedProduct.DeletedAt, returnedProduct.DeletedAt);
+                    Assert.Equal(expectedProduct.DeletedByUserId, returnedProduct.DeletedByUserId);
+                    Assert.Equal(expectedProduct.ModifiedAt, returnedProduct.ModifiedAt);
+                    Assert.Equal(expectedProduct.ModifiedByUserId, returnedProduct.ModifiedByUserId);
+                }
+                if (returnedProducts[i].GetType() == typeof(PhysicalProduct))
+                {
+                    PhysicalProduct returnedProduct = (PhysicalProduct)returnedProducts[i];
+                    PhysicalProduct expectedProduct = (PhysicalProduct)expectedProductsList[i];
+                    Assert.Equal(expectedProduct.Id, returnedProduct.Id);
+                    Assert.Equal(expectedProduct.Name, returnedProduct.Name);
+                    Assert.Equal(expectedProduct.BrandId, returnedProduct.BrandId);
+                    Assert.Equal(expectedProduct.Price, returnedProduct.Price);
+                    Assert.Equal(expectedProduct.Quantity, returnedProduct.Quantity);
+                    Assert.Equal(expectedProduct.Weight, returnedProduct.Weight);
+                    Assert.Equal(expectedProduct.CreatedAt, returnedProduct.CreatedAt);
+                    Assert.Equal(expectedProduct.CreatedByUserId, returnedProduct.CreatedByUserId);
+                    Assert.Equal(expectedProduct.IsDeleted, returnedProduct.IsDeleted);
+                    Assert.Equal(expectedProduct.DeletedAt, returnedProduct.DeletedAt);
+                    Assert.Equal(expectedProduct.DeletedByUserId, returnedProduct.DeletedByUserId);
+                    Assert.Equal(expectedProduct.ModifiedAt, returnedProduct.ModifiedAt);
+                    Assert.Equal(expectedProduct.ModifiedByUserId, returnedProduct.ModifiedByUserId);
+                }
             }
         }
 
@@ -221,7 +282,7 @@ namespace ControllersTest
             // Arrange
             int id = 1;
             string expectedMessage = $"The product with id={id} was not found";
-            Product? product = null;
+            BaseProduct? product = null;
             _productService.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(product);
 
             // Act
@@ -239,10 +300,10 @@ namespace ControllersTest
             int id = 1;
             DateTime createdDateTime = DateTime.Now;
 
-            Product product = CreateProduct();
+            DigitalProduct product = CreateDigitalProduct();
             product.CreatedAt = createdDateTime;
 
-            Product expectedProduct = CreateProduct();
+            DigitalProduct expectedProduct = CreateDigitalProduct();
             expectedProduct.CreatedAt = createdDateTime;
             _productService.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(product);
 
@@ -251,12 +312,12 @@ namespace ControllersTest
 
             // Assert
             var okObjectResult = Assert.IsType<OkObjectResult>(result);
-            var returnedProdut = Assert.IsType<Product>(okObjectResult.Value);
+            var returnedProdut = Assert.IsType<DigitalProduct>(okObjectResult.Value);
             Assert.Equal(expectedProduct.Id, returnedProdut.Id);
             Assert.Equal(expectedProduct.Name, returnedProdut.Name);
             Assert.Equal(expectedProduct.Price, returnedProdut.Price);
-            Assert.Equal(expectedProduct.Quantity, returnedProdut.Quantity);
             Assert.Equal(expectedProduct.BrandId, returnedProdut.BrandId);
+            Assert.Equal(expectedProduct.FileSize, returnedProdut.FileSize);
             Assert.Equal(expectedProduct.CreatedAt, returnedProdut.CreatedAt);
             Assert.Equal(expectedProduct.CreatedByUserId, returnedProdut.CreatedByUserId);
             Assert.Equal(expectedProduct.IsDeleted, returnedProdut.IsDeleted);
@@ -289,7 +350,7 @@ namespace ControllersTest
             // Arrange
             int id = 1;
             string expectedMessage = $"The product with id={id} was not found";
-            Product? product = null;
+            BaseProduct? product = null;
             _productService.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(product);
 
             // Act
@@ -307,7 +368,7 @@ namespace ControllersTest
             int id = 1;
             string expectedMessage = $"The product with id={id} has beed deleted already";
             var expectedStatusCode = StatusCodes.Status410Gone;
-            Product product = CreateProduct();
+            BaseProduct product = CreateDigitalProduct();
             product.DeletedAt = DateTime.Now;
             _productService.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(product);
 
@@ -325,7 +386,7 @@ namespace ControllersTest
         {
             // Arrange
             int id = 1;
-            Product product = CreateProduct();
+            BaseProduct product = CreateDigitalProduct();
             _productService.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(product);
             _productService.Setup(x => x.DeleteAsync(id)).ReturnsAsync(true);
 
@@ -346,7 +407,7 @@ namespace ControllersTest
             int id = 1;
             string expectedMessage = "An error occured! The product couldn't be deleted from database";
             var expectedStatusCode = StatusCodes.Status500InternalServerError;
-            Product product = CreateProduct();
+            BaseProduct product = CreateDigitalProduct();
             _productService.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(product);
             _productService.Setup(x => x.DeleteAsync(id)).ReturnsAsync(false);
 
@@ -370,7 +431,24 @@ namespace ControllersTest
             // Arrange
             int id = 0;
             string expectedMessage = "The id should be an integer greater than zero";
-            ProductDTO productDTO = CreateProductDTO();
+            ProductDTO productDTO = CreateProductDTOForDigitalProduct();
+
+            // Act
+            var result = await _sut.Update(productDTO, id);
+
+            // Assert
+            var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Equal(expectedMessage, badRequestObjectResult.Value);
+        }
+
+        [Fact]
+        public async Task Update_ProductTypeIsNotValid()
+        {
+            // Arrange
+            ProductDTO productDTO = CreateProductDTOForDigitalProduct();
+            int id = 1;
+            productDTO.Weight = 3;
+            string expectedMessage = "Product should be either Physical or Digital!";
 
             // Act
             var result = await _sut.Update(productDTO, id);
@@ -386,8 +464,8 @@ namespace ControllersTest
             // Arrange
             int id = 1;
             string expectedMessage = $"The product with id={id} was not found";
-            ProductDTO productDTO = CreateProductDTO();
-            Product? product = null;
+            ProductDTO productDTO = CreateProductDTOForDigitalProduct();
+            BaseProduct? product = null;
             _productService.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(product);
 
             // Act
@@ -405,8 +483,8 @@ namespace ControllersTest
             int id = 1;
             string expectedMessage = $"The product with id={id} has beed deleted";
             var expectedStatusCode = StatusCodes.Status410Gone;
-            ProductDTO productDTO = CreateProductDTO();
-            Product product = CreateProduct();
+            ProductDTO productDTO = CreateProductDTOForDigitalProduct();
+            BaseProduct product = CreateDigitalProduct();
             product.DeletedAt = DateTime.Now;
             _productService.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(product);
 
@@ -420,18 +498,38 @@ namespace ControllersTest
         }
 
         [Fact]
+        public async Task Update_ProductTypeIsChanged()
+        {
+            // Arrange
+            int id = 1;
+            string expectedMessage = "The type of the product cannot be changed";
+            ProductDTO productDTO = CreateProductDTOForDigitalProduct();
+            DigitalProduct digitalProduct = CreateDigitalProduct();
+            BaseProduct baseProduct = CreatePhysicalProduct();
+            _productService.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(baseProduct);
+            _mapper.Setup(m => m.Map<DigitalProduct>(productDTO)).Returns(digitalProduct);
+
+            // Act
+            var result = await _sut.Update(productDTO, id);
+
+            // Assert
+            var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Equal(expectedMessage, badRequestObjectResult.Value);
+        }
+
+        [Fact]
         public async Task Update_Successfully()
         {
             // Arrange
             int id = 1;
-            ProductDTO productDTO = CreateProductDTO();
+            ProductDTO productDTO = CreateProductDTOForDigitalProduct();
             DateTime createdDateTime = DateTime.Now;
-            Product productFromGetByIdService = CreateProduct();
+            BaseProduct productFromGetByIdService = CreateDigitalProduct();
             productFromGetByIdService.CreatedAt = createdDateTime;
-            Product productFromMapper = CreateProduct();
+            BaseProduct productFromMapper = CreateDigitalProduct();
             productFromMapper.CreatedAt = createdDateTime;
             _productService.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(productFromGetByIdService);
-            _mapper.Setup(x => x.Map<Product>(productDTO)).Returns(productFromMapper);
+            _mapper.Setup(x => x.Map<BaseProduct>(productDTO)).Returns(productFromMapper);
             _productService.Setup(x => x.UpdateAsync(productFromMapper)).ReturnsAsync(true);
 
             // Act
@@ -449,14 +547,14 @@ namespace ControllersTest
             int id = 1;
             string expectedMessage = "An error occured! The product couldn't be updated in database";
             var expectedStatusCode = StatusCodes.Status500InternalServerError;
-            ProductDTO productDTO = CreateProductDTO();
+            ProductDTO productDTO = CreateProductDTOForDigitalProduct();
             DateTime createdDateTime = DateTime.Now;
-            Product productFromGetByIdService = CreateProduct();
+            BaseProduct productFromGetByIdService = CreateDigitalProduct();
             productFromGetByIdService.CreatedAt = createdDateTime;
-            Product productFromMapper = CreateProduct();
+            BaseProduct productFromMapper = CreateDigitalProduct();
             productFromMapper.CreatedAt = createdDateTime;
             _productService.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(productFromGetByIdService);
-            _mapper.Setup(x => x.Map<Product>(productDTO)).Returns(productFromMapper);
+            _mapper.Setup(x => x.Map<BaseProduct>(productDTO)).Returns(productFromMapper);
             _productService.Setup(x => x.UpdateAsync(productFromMapper)).ReturnsAsync(false);
 
 

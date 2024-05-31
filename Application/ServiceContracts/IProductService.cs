@@ -4,13 +4,13 @@ namespace Application.ServiceContracts;
 
 public interface IProductService
 {
-    Task<int?> AddAsync(Product product);
+    Task<int?> AddAsync(BaseProduct product);
 
-    Task<IEnumerable<Product>> GetAllAsync();
+    Task<IEnumerable<BaseProduct>> GetAllAsync();
 
-    Task<Product?> GetByIdAsync(int id);
+    Task<BaseProduct?> GetByIdAsync(int id);
 
-    Task<bool> UpdateAsync(Product product);
+    Task<bool> UpdateAsync(BaseProduct product);
 
     Task<bool> DeleteAsync(int id);
 

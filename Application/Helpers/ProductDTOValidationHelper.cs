@@ -21,11 +21,20 @@ public class ProductDTOValidationHelper : AbstractValidator<ProductDTO>
             .LessThan(double.MaxValue)
             .WithMessage("Please enter a valid value for price");
 
+        RuleFor(p=>p.FileSize)
+            .GreaterThan(0)
+            .LessThan(double.MaxValue)
+            .WithMessage("Please enter a valid value for file size");
+
         RuleFor(p => p.Quantity)
-            .NotNull()
             .GreaterThanOrEqualTo(0)
             .LessThan(int.MaxValue)
             .WithMessage("Please enter a valid value for quantity");
+
+        RuleFor(p => p.Weight)
+            .GreaterThan(0)
+            .LessThan(double.MaxValue)
+            .WithMessage("Please enter a valid value for weight");
 
         RuleFor(p=>p.BrandId)
             .NotNull()
