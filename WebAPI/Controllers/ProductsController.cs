@@ -7,7 +7,7 @@ using System.Collections;
 
 namespace WebAPI.Controllers;
 
-[Route("[controller]")]
+[Route("api/[controller]")]
 [ApiController]
 public class ProductsController : ControllerBase
 {
