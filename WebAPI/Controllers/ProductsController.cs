@@ -67,7 +67,7 @@ public class ProductsController : ControllerBase
     {
         bool isDigitalProduct = productDTO.FileSize is not null;
         bool isPhysicalProduct = productDTO.Weight is not null || productDTO.Quantity is not null;
-        if (isDigitalProduct == isPhysicalProduct)
+        if (isDigitalProduct && isPhysicalProduct)
             return BadRequest("Product should be either Physical or Digital!");
 
         Brand? brand = await _brandService.GetByIdAsync(productDTO.BrandId);
@@ -135,7 +135,7 @@ public class ProductsController : ControllerBase
         if (id <= 0)
             return BadRequest("The id should be an integer greater than zero");
 
-        if (isDigitalProduct == isPhysicalProduct)
+        if (isDigitalProduct && isPhysicalProduct)
             return BadRequest("Product should be either Physical or Digital!");
 
         BaseProduct? productToUpdate = await _productsService.GetByIdAsync(id);
