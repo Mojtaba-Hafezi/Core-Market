@@ -186,7 +186,7 @@ namespace ControllersTest
             digitalProduct.CreatedAt = createdDateTime;
 
             PhysicalProduct physicalProduct = CreatePhysicalProduct();
-            digitalProduct.CreatedAt = createdDateTime;
+            physicalProduct.CreatedAt = createdDateTime;
 
 
             List<BaseProduct> expectedProductsList = new List<BaseProduct>
@@ -200,7 +200,7 @@ namespace ControllersTest
             var result = await _sut.GetAll();
 
             // Assert
-            var okObjectResult = Assert.IsType<OkObjectResult>(result.Result);
+            var okObjectResult = Assert.IsType<OkObjectResult>(result);
 
             var returnedProducts = Assert.IsType<ArrayList>(okObjectResult.Value);
 
