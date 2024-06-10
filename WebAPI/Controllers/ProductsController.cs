@@ -23,10 +23,10 @@ public class ProductsController : ControllerBase
 
 
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<BaseProduct>), StatusCodes.Status200OK)]
     //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-    public async Task<ActionResult<IEnumerable<BaseProduct>>> GetAll()
+    public async Task<IActionResult> GetAll()
     {
 
         List<BaseProduct> products = (List<BaseProduct>)await _productsService.GetAllAsync();
@@ -38,12 +38,12 @@ public class ProductsController : ControllerBase
 
     [HttpGet]
     [Route("{id:int}", Name = "GetById")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(BaseProduct), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-    public async Task<ActionResult> GetById([FromRoute] int id)
+    public async Task<IActionResult> GetById([FromRoute] int id)
     {
         if (id <= 0)
             return BadRequest("The id should be an integer greater than zero");
@@ -63,7 +63,7 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-    public async Task<ActionResult> Add([FromBody] ProductDTO productDTO)
+    public async Task<IActionResult> Add([FromBody] ProductDTO productDTO)
     {
         bool isDigitalProduct = productDTO.FileSize is not null;
         bool isPhysicalProduct = productDTO.Weight is not null || productDTO.Quantity is not null;
@@ -76,7 +76,7 @@ public class ProductsController : ControllerBase
             return NotFound($"The brand was not found for id = {productDTO.BrandId}");
 
         BaseProduct product;
-        if(isDigitalProduct)
+        if (isDigitalProduct)
         {
             product = _mapper.Map<DigitalProduct>(productDTO);
         }
@@ -100,7 +100,7 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status410Gone)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-    public async Task<ActionResult> Delete([FromRoute] int id)
+    public async Task<IActionResult> Delete([FromRoute] int id)
     {
         if (id <= 0)
             return BadRequest("The id should be an integer greater than zero");
@@ -127,11 +127,11 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status410Gone)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-    public async Task<ActionResult> Update([FromBody] ProductDTO productDTO, [FromRoute] int id)
+    public async Task<IActionResult> Update([FromBody] ProductDTO productDTO, [FromRoute] int id)
     {
         bool isDigitalProduct = productDTO.FileSize is not null;
         bool isPhysicalProduct = productDTO.Weight is not null || productDTO.Quantity is not null;
-        
+
         if (id <= 0)
             return BadRequest("The id should be an integer greater than zero");
 
@@ -166,9 +166,9 @@ public class ProductsController : ControllerBase
     }
 
     [HttpDelete]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> HardDeleteAllSoftDeleted()
+    public async Task<IActionResult> HardDeleteAllSoftDeleted()
     {
         int deletedProductsCount = await _productsService.HardDelete();
         return Ok($"{deletedProductsCount} product(s) have been deleted!");

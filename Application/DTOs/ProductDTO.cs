@@ -15,6 +15,5 @@ public class ProductDTO
     public double? Weight { get; set; }
 
     public int BrandId { get; set; }
-    public Brand? Brand { get; set; }
 
 }
