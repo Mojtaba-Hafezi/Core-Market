@@ -10,6 +10,8 @@ internal class BaseProductConfiguration : IEntityTypeConfiguration<BaseProduct>
     {
         builder.HasKey(p => p.Id);
 
+        builder.HasQueryFilter(p => !p.IsDeleted);
+
         builder.HasOne<Brand>(p => p.Brand)
             .WithMany(b => b.BaseProducts)
             .HasForeignKey(p => p.BrandId)

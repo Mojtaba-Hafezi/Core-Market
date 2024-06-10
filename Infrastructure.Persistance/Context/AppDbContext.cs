@@ -1,6 +1,8 @@
 ﻿using Domain.Entities;
+using Infrastructure.Persistance.Context.Configurations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Reflection;
 using System.Reflection.Metadata;
 
 namespace Infrastructure.Persistance.Context;
@@ -28,7 +30,9 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("BASE");
-        
+
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
         modelBuilder.Entity<DigitalProduct>();
         modelBuilder.Entity<PhysicalProduct>();
 
