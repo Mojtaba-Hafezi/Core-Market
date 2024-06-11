@@ -37,8 +37,8 @@ public class ProductService : IProductService
         return await _productRepository.UpdateAsync(product);
     }
 
-    public Task<int> HardDelete()
+    public Task<int> DeletedProductCount()
     {
-        return _productRepository.HardDelete();
+        return _productRepository.GetDeletedProductCount();
     }
 }

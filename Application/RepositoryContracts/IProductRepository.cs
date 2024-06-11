@@ -5,5 +5,5 @@ namespace Application.RepositoryContracts;
 
 public interface IProductRepository : IGenericRepository<BaseProduct>
 {
-    Task<int> HardDelete();
+    Task<int> GetDeletedProductCount();
 }

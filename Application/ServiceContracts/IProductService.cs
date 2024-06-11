@@ -14,5 +14,5 @@ public interface IProductService
 
     Task<bool> DeleteAsync(int id);
 
-    Task<int> HardDelete();
+    Task<int> DeletedProductCount();
 }

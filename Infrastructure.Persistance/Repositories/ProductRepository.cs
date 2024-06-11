@@ -15,13 +15,13 @@ public class ProductRepository : GenericRepository<BaseProduct>, IProductReposit
         _configuration = configuration;
     }
 
-    public async Task<int> HardDelete()
+    public async Task<int> GetDeletedProductCount()
     {
         SqlConnection connection = new SqlConnection(_configuration.GetValue<string>("CoreMarketConnection"));
-        SqlCommand command = new SqlCommand("HardDelete",connection);
+        SqlCommand command = new SqlCommand("DeletedProductCount", connection);
         command.CommandType = CommandType.StoredProcedure;
         connection.Open();
-        int deletedProductsCount = await command.ExecuteNonQueryAsync();
+        int deletedProductsCount = Convert.ToInt32( await command.ExecuteScalarAsync());
         connection.Close();
         return deletedProductsCount;
     }

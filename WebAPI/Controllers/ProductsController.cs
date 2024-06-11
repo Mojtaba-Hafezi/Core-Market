@@ -165,12 +165,12 @@ public class ProductsController : ControllerBase
         return StatusCode(500, "An error occured! The product couldn't be updated in database");
     }
 
-    [HttpDelete]
+    [HttpGet("GetDeletedProductCount")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> HardDeleteAllSoftDeleted()
+    public async Task<IActionResult> GetDeletedProductCount()
     {
-        int deletedProductsCount = await _productsService.HardDelete();
+        int deletedProductsCount = await _productsService.DeletedProductCount();
         return Ok($"{deletedProductsCount} product(s) have been deleted!");
     }
 }
