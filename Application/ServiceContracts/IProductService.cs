@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.DTOs;
+using Domain.Entities;
 
 namespace Application.ServiceContracts;
 
@@ -6,7 +7,7 @@ public interface IProductService
 {
     Task<int?> AddAsync(BaseProduct product);
 
-    Task<IEnumerable<BaseProduct>> GetAllAsync();
+    Task<PagedEntityDTO<BaseProduct>> GetAllAsync(int page, int limit, string? term);
 
     Task<BaseProduct?> GetByIdAsync(int id);
 

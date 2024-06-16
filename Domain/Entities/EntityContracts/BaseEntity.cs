@@ -4,6 +4,7 @@ namespace Domain.Entities.EntityContracts;
 public abstract class BaseEntity : IDeletableEntity, IAuditableEntity
 {
     public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
     public DateTime? ModifiedAt { get; set; }
     public int? ModifiedByUserId { get; set; }
     public DateTime CreatedAt { get; set; }

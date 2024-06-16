@@ -1,11 +1,13 @@
-﻿namespace Application.RepositoryContracts;
+﻿using Application.DTOs;
+
+namespace Application.RepositoryContracts;
 
 
 public interface IGenericRepository<TEntity> where TEntity : class
 {
     Task<int?> AddAsync(TEntity entity);
 
-    Task<IEnumerable<TEntity>> GetAllAsync();
+    Task<PagedEntityDTO<TEntity>> GetAllAsync(int page, int limit, string? term);
 
     Task<TEntity?> GetByIdAsync(int id);
 

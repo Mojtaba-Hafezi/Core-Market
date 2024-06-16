@@ -1,4 +1,5 @@
-﻿using Application.RepositoryContracts;
+﻿using Application.DTOs;
+using Application.RepositoryContracts;
 using Domain.Entities;
 using Domain.Entities.EntityContracts;
 using Infrastructure.Persistance.Context;
@@ -38,9 +39,29 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         return (await _appDbContext.SaveChangesAsync() > 0);
     }
 
-    public async Task<IEnumerable<TEntity>> GetAllAsync()
+    public async Task<PagedEntityDTO<TEntity>> GetAllAsync(int page, int limit, string? term)
     {
-        return await _appDbContext.Set<TEntity>().ToListAsync();
+        List<TEntity> entities = new List<TEntity>();
+        if (string.IsNullOrWhiteSpace(term))
+        {
+            entities = await _appDbContext.Set<TEntity>().ToListAsync();
+        }
+        else
+        {
+            entities = await _appDbContext.Set<TEntity>().Where(entity => entity.Name.ToLower().Contains(term)).ToListAsync();
+        }
+        int totalCount = entities.Count();
+        int totalPages = Convert.ToInt32(Math.Ceiling((double)totalCount / limit));
+        List<TEntity> PagedEntities = entities.Skip(limit * (page - 1)).Take(limit).ToList();
+
+        PagedEntityDTO<TEntity> pagedEntityDTO =
+            new PagedEntityDTO<TEntity>
+            {
+                PagedEntities = PagedEntities,
+                TotalCount = totalCount,
+                TotalPages = totalPages
+            };
+        return pagedEntityDTO;
     }
 
     public async Task<TEntity?> GetByIdAsync(int id)

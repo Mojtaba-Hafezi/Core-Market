@@ -23,16 +23,20 @@ public class ProductsController : ControllerBase
 
 
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<BaseProduct>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PagedProductDTO), StatusCodes.Status200OK)]
     //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll(int page, int limit, string? term)
     {
-
-        List<BaseProduct> products = (List<BaseProduct>)await _productsService.GetAllAsync();
-        ArrayList productList = [.. products];
-        return Ok(productList);
-
+        PagedEntityDTO<BaseProduct> pagedProducts = await _productsService.GetAllAsync(page, limit, term);
+        PagedProductDTO pagedProductDTO =
+        new PagedProductDTO
+        {
+            PagedEntities = [.. pagedProducts.PagedEntities],
+            TotalCount = pagedProducts.TotalCount,
+            TotalPages = pagedProducts.TotalPages
+        };
+        return Ok(pagedProductDTO);
     }
 
 
@@ -171,6 +175,6 @@ public class ProductsController : ControllerBase
     public async Task<IActionResult> GetDeletedProductCount()
     {
         int deletedProductsCount = await _productsService.DeletedProductCount();
-        return Ok($"{deletedProductsCount} product(s) have been deleted!");
+        return Ok($"There are {deletedProductsCount} product(s) That are deleted!");
     }
 }

@@ -1,4 +1,5 @@
-﻿using Application.RepositoryContracts;
+﻿using Application.DTOs;
+using Application.RepositoryContracts;
 using Application.ServiceContracts;
 using Domain.Entities;
 
@@ -22,9 +23,9 @@ public class ProductService : IProductService
         return await _productRepository.DeleteAsync(id);
     }
 
-    public async Task<IEnumerable<BaseProduct>> GetAllAsync()
+    public async Task<PagedEntityDTO<BaseProduct>> GetAllAsync(int page, int limit, string? term)
     {
-        return await _productRepository.GetAllAsync();
+        return await _productRepository.GetAllAsync(page, limit, term);
     }
 
     public async Task<BaseProduct?> GetByIdAsync(int id)

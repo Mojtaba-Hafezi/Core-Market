@@ -182,6 +182,12 @@ namespace ControllersTest
             // Arrange
             DateTime createdDateTime = DateTime.Now;
 
+            int page = 2;
+            int limit = 2;
+            string term = "s";
+            int expectedtotalCount = 10;
+            int expectedtotalPaged = 5;
+
             DigitalProduct digitalProduct = CreateDigitalProduct();
             digitalProduct.CreatedAt = createdDateTime;
 
@@ -195,22 +201,37 @@ namespace ControllersTest
                 physicalProduct
             };
 
-            _productService.Setup(x => x.GetAllAsync()).ReturnsAsync(expectedProductsList);
+            PagedEntityDTO<BaseProduct> PagedEntityDTO =
+                new PagedEntityDTO<BaseProduct>
+                {
+                    PagedEntities = expectedProductsList,
+                    TotalCount = expectedtotalCount,
+                    TotalPages = expectedtotalPaged
+                };
+            PagedProductDTO expectedPagedProductDTO =
+                new PagedProductDTO
+                {
+                    PagedEntities = [.. PagedEntityDTO.PagedEntities],
+                    TotalCount = PagedEntityDTO.TotalCount,
+                    TotalPages = PagedEntityDTO.TotalPages
+                };
+
+            _productService.Setup(x => x.GetAllAsync(page, limit, term)).ReturnsAsync(PagedEntityDTO);
             // Act
-            var result = await _sut.GetAll();
+            var result = await _sut.GetAll(page, limit, term);
 
             // Assert
             var okObjectResult = Assert.IsType<OkObjectResult>(result);
-
-            var returnedProducts = Assert.IsType<ArrayList>(okObjectResult.Value);
-
-            Assert.Equal(expectedProductsList.Count, returnedProducts.Count);
-            for (int i = 0; i < expectedProductsList.Count; i++)
+            PagedProductDTO returnedPagedProductDTO = Assert.IsType<PagedProductDTO>(okObjectResult.Value);
+            Assert.Equal(expectedPagedProductDTO.TotalCount, returnedPagedProductDTO.TotalCount);
+            Assert.Equal(expectedPagedProductDTO.TotalPages, returnedPagedProductDTO.TotalPages);
+            Assert.Equal(expectedPagedProductDTO.PagedEntities.Count, returnedPagedProductDTO.PagedEntities.Count);
+            for (int i=0; i<expectedPagedProductDTO.PagedEntities.Count; i++)
             {
-                if (returnedProducts[i].GetType() == typeof(DigitalProduct))
+                if ( returnedPagedProductDTO.PagedEntities[i].GetType() == typeof(DigitalProduct))
                 {
-                    DigitalProduct returnedProduct  = (DigitalProduct)returnedProducts[i];
-                    DigitalProduct expectedProduct = (DigitalProduct)expectedProductsList[i];
+                    DigitalProduct returnedProduct = (DigitalProduct)returnedPagedProductDTO.PagedEntities[i];
+                    DigitalProduct expectedProduct = (DigitalProduct)expectedPagedProductDTO.PagedEntities[i];
                     Assert.Equal(expectedProduct.Id, returnedProduct.Id);
                     Assert.Equal(expectedProduct.Name, returnedProduct.Name);
                     Assert.Equal(expectedProduct.BrandId, returnedProduct.BrandId);
@@ -224,10 +245,10 @@ namespace ControllersTest
                     Assert.Equal(expectedProduct.ModifiedAt, returnedProduct.ModifiedAt);
                     Assert.Equal(expectedProduct.ModifiedByUserId, returnedProduct.ModifiedByUserId);
                 }
-                if (returnedProducts[i].GetType() == typeof(PhysicalProduct))
+                if (returnedPagedProductDTO.PagedEntities[i].GetType() == typeof(PhysicalProduct))
                 {
-                    PhysicalProduct returnedProduct = (PhysicalProduct)returnedProducts[i];
-                    PhysicalProduct expectedProduct = (PhysicalProduct)expectedProductsList[i];
+                    PhysicalProduct returnedProduct = (PhysicalProduct)returnedPagedProductDTO.PagedEntities[i];
+                    PhysicalProduct expectedProduct = (PhysicalProduct)expectedPagedProductDTO.PagedEntities[i];
                     Assert.Equal(expectedProduct.Id, returnedProduct.Id);
                     Assert.Equal(expectedProduct.Name, returnedProduct.Name);
                     Assert.Equal(expectedProduct.BrandId, returnedProduct.BrandId);
@@ -243,6 +264,7 @@ namespace ControllersTest
                     Assert.Equal(expectedProduct.ModifiedByUserId, returnedProduct.ModifiedByUserId);
                 }
             }
+
         }
 
         //[Fact]
@@ -571,18 +593,18 @@ namespace ControllersTest
 
         #endregion
 
-        #region HardDeleteAllSoftDeleted
+        #region DeletedProductCount
         [Fact]
-        public async Task HardDeleteAllSoftDeletedSuccessfully()
+        public async Task GetDeletedProductCountSuccessfully()
         {
             // Arrange 
             int deletedProductsCount = 3;
-            string expectedMessage = $"{deletedProductsCount} product(s) have been deleted!";
-            _productService.Setup(x => x.HardDelete()).ReturnsAsync(deletedProductsCount);
+            string expectedMessage = $"There are {deletedProductsCount} product(s) That are deleted!";
+            _productService.Setup(x => x.DeletedProductCount()).ReturnsAsync(deletedProductsCount);
 
 
             // Act
-            var result = await _sut.HardDeleteAllSoftDeleted();
+            var result = await _sut.GetDeletedProductCount();
 
 
             // Assert
